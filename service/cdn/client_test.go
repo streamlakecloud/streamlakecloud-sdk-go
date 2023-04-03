@@ -82,7 +82,7 @@ func TestDescribeRefreshTasks(t *testing.T) {
 func TestGetCdnData(t *testing.T) {
 	client := NewCDNClient(nil)
 	client.ServiceInfo.Host = "streamlake-api.staging.kuaishou.com"
-	client.ServiceInfo.Credentials = base.Credentials{AccessKey: "8dcf3df43316434080a179a7a573054a", SecretAccessKey: "21025fbc4cdd4a9cb7eace76c3449017"}
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: "", SecretAccessKey: ""}
 
 	req := GetDomainRealTimeCdnRequest{
 		StartTime: "2022-08-29T01:58:00Z",
@@ -101,7 +101,7 @@ func TestGetCdnData(t *testing.T) {
 func TestGetOriginData(t *testing.T) {
 	client := NewCDNClient(nil)
 	client.ServiceInfo.Host = "streamlake-api.staging.kuaishou.com"
-	client.ServiceInfo.Credentials = base.Credentials{AccessKey: "8dcf3df43316434080a179a7a573054a", SecretAccessKey: "21025fbc4cdd4a9cb7eace76c3449017"}
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: "", SecretAccessKey: ""}
 
 	req := GetDomainRealTimeOriginRequest{
 		StartTime: "2022-08-29T01:58:00Z",
@@ -120,7 +120,7 @@ func TestGetOriginData(t *testing.T) {
 func TestPushPCDNCache(t *testing.T) {
 	client := NewCDNClient(nil)
 	client.ServiceInfo.Host = "vod.streamlakeapi.com"
-	client.ServiceInfo.Credentials = base.Credentials{AccessKey: "f31f5838ba104040b2f23a51a0c52e84", SecretAccessKey: "69cb6facdf36486d9f7b7cdf943f1fb5"}
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: "", SecretAccessKey: ""}
 	client.ServiceInfo.ProductName = "vod"
 	client.ServiceInfo.Header.Set("Content-Type", "application/json")
 

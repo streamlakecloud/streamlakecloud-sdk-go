@@ -37,7 +37,7 @@ func TestFetchUpload(t *testing.T) {
 	req := FetchUploadRequest{
 		URLSets: []FetchUploadURLSet{
 			{
-				SourceURL:    "https://cdnfile.corp.kuaishou.com/kc/files/a/post-test-materials/big_buck_bunny_720p_5mb.mp4",
+				SourceURL:    "",
 				CallbackArgs: "test",
 			},
 		},
@@ -72,7 +72,7 @@ func TestFetchStore(t *testing.T) {
 	req := FetchStoreRequest{
 		URLSets: []FetchStoreURLSet{
 			{
-				SourceURL:    "https://cdnfile.corp.kuaishou.com/kc/files/a/post-test-materials/big_buck_bunny_720p_5mb.mp4",
+				SourceURL:    "",
 				StoreKey:     "big_buck_bunny_720p_5mb.mp4",
 				CallbackArgs: "test",
 			},
@@ -91,7 +91,7 @@ func TestDescribeMediaInfo(t *testing.T) {
 	client.ServiceInfo.Host = DEMO_HOST_STAGING
 	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
 	req := DescribeMediaInfoRequest{
-		MediaId: "17c305ac2d3bc999", // https://video-store.staging.kuaishou.com//readVideoAsset/1ac4beaac9750903
+		MediaId: "17c305ac2d3bc999",
 	}
 	resp, err := client.DescribeMediaInfo(req)
 	if err != nil {
@@ -121,7 +121,7 @@ func TestSubmitWorkflow(t *testing.T) {
 	client.ServiceInfo.Host = DEMO_HOST_STAGING
 	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
 	req := SubmitWorkflowRequest{
-		MediaId:    "17c305ac2d3bc999", // https://video-store.staging.kuaishou.com//readVideoAsset/1ac4beaac9750903
+		MediaId:    "17c305ac2d3bc999",
 		WorkflowId: "workflow_h265_mp4_0",
 	}
 	resp, err := client.SubmitWorkflow(req)
@@ -168,7 +168,7 @@ func TestDescribeMediaProcessJobs(t *testing.T) {
 	client.ServiceInfo.Host = DEMO_HOST_STAGING
 	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
 	req := DescribeMediaProcessJobsRequest{
-		JobIds: "27eb3ac7-425d-4dfb-91de-769b279b5f06-20220615-0,c7f17271-fa36-48db-94df-e5471f96b09e-20220615-0", // https://video-store.staging.kuaishou.com//readVideoAsset/1ac4beaac9750903
+		JobIds: "27eb3ac7-425d-4dfb-91de-769b279b5f06-20220615-0,c7f17271-fa36-48db-94df-e5471f96b09e-20220615-0",
 	}
 	resp, err := client.DescribeMediaProcessJobs(req)
 	if err != nil {
