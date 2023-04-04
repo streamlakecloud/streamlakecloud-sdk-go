@@ -250,6 +250,7 @@ type DescribeAttachedMediaInfoRequest struct {
 type InputFileSet struct {
 	Bucket string
 	Object string
+	Url    string
 }
 
 type OutputFileSet struct {

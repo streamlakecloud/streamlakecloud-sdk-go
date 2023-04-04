@@ -168,20 +168,16 @@ func TestSubmitMediaProcessJobs(t *testing.T) {
 	client.ServiceInfo.Host = DEMO_HOST_STAGING
 	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
 	req := SubmitMediaProcessJobsRequest{
-		MediaId: "70805112a18f9e82",
+		MediaId: "",
 		ProcessSet: ProcessSet{
 			OperationSets: []OperationSet{
 				{
 					TemplateId:  "",
 					ProcessType: "MediaFeatureAnalysis",
 					InputFileSet: InputFileSet{
-						Bucket: "video-media-handle-test",
-						Object: "bilibili01.png",
+						Url: "https://s2-10623.kwimgs.com/kos/nlav10623/vision_images/topBannerx1.png",
 					},
-					OutputFileSet: OutputFileSet{
-						Bucket: "video-media-handle-test",
-						Object: "bilibili01-1.png",
-					},
+					OutputFileSet: OutputFileSet{},
 					ExtraParams: map[string]string{
 						"InputFormat":   "Video",
 						"MediaFeatures": "[\"QualityFeature\",\"AestheticsFeature\",\"ContentFeature\",\"AudioFeature\"]",
