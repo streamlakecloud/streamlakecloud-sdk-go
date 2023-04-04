@@ -230,12 +230,14 @@ type TranscodeInfo struct {
 	HdrType             string // enum, one of {"SDR", "HDR10", "HDR10+", "Dolby Vision", "HLG", "SDR+"}
 	Bitrate             int32  // 文件码率，单位：Kbps
 }
+
 type DescribeMediaInfoResult struct {
 	MediaId        string `json:",omitempty"`
 	PrimaryKey     string `json:",omitempty"`
 	SourceInfo     SourceInfo
 	TranscodeInfos []TranscodeInfo
 }
+
 type DescribeMediaInfoResponse struct {
 	ResponseMeta *base.ResponseMeta
 	ResponseData DescribeMediaInfoResult `json:",omitempty"`
@@ -243,6 +245,48 @@ type DescribeMediaInfoResponse struct {
 
 type DescribeAttachedMediaInfoRequest struct {
 	MediaKeys string // string. list of comma separated MediaKey
+}
+
+type InputFileSet struct {
+	Bucket string
+	Object string
+}
+
+type OutputFileSet struct {
+	Bucket string
+	Object string
+}
+
+type OperationSet struct {
+	TemplateId    string
+	ProcessType   string
+	InputFileSet  InputFileSet
+	OutputFileSet OutputFileSet
+	ExtraParams   map[string]string
+}
+
+type ProcessSet struct {
+	OperationSets  []OperationSet
+	CallbackUrl    string
+	CallbackMethod string
+	UserData       string
+}
+
+type SubmitMediaProcessJobsRequest struct {
+	MediaId    string
+	ProcessSet ProcessSet
+}
+
+type SubmitMediaProcessJobsJobInfo struct {
+	JobId      string
+	TemplateId string
+}
+
+type SubmitMediaProcessJobsResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		JobInfos []SubmitMediaProcessJobsJobInfo
+	} `json:",omitempty"`
 }
 
 type AttachedMediaInfo struct {

@@ -77,6 +77,15 @@ func (v *VodClient) ProcessMedia(req ProcessMediaRequest) (*ProcessMediaResponse
 	return resp, nil
 }
 
+func (v *VodClient) SubmitMediaProcessJobs(req SubmitMediaProcessJobsRequest) (*SubmitMediaProcessJobsResponse, error) {
+	resp := &SubmitMediaProcessJobsResponse{}
+	err := v.PostForAPIWithRequestResponse("SubmitMediaProcessJobs", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (v *VodClient) DescribeMediaProcessJobs(req DescribeMediaProcessJobsRequest) (*DescribeMediaProcessJobsResponse, error) {
 	resp := &DescribeMediaProcessJobsResponse{}
 	err := v.PostForAPIWithRequestResponse("DescribeMediaProcessJobs", req, resp)

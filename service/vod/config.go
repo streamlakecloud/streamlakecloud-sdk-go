@@ -80,6 +80,14 @@ var ApiList = map[string]*base.ApiInfo{
 		},
 	},
 
+	"SubmitMediaProcessJobs": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"SubmitMediaProcessJobs"},
+		},
+	},
+
 	"DescribeMediaProcessJobs": {
 		Method: http.MethodPost,
 		Path:   "/",

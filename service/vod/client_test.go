@@ -163,6 +163,44 @@ func TestProcessMedia(t *testing.T) {
 	}
 }
 
+func TestSubmitMediaProcessJobs(t *testing.T) {
+	client := NewVodClient(nil)
+	client.ServiceInfo.Host = DEMO_HOST_STAGING
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
+	req := SubmitMediaProcessJobsRequest{
+		MediaId: "70805112a18f9e82",
+		ProcessSet: ProcessSet{
+			OperationSets: []OperationSet{
+				{
+					TemplateId:  "",
+					ProcessType: "MediaFeatureAnalysis",
+					InputFileSet: InputFileSet{
+						Bucket: "video-media-handle-test",
+						Object: "bilibili01.png",
+					},
+					OutputFileSet: OutputFileSet{
+						Bucket: "video-media-handle-test",
+						Object: "bilibili01-1.png",
+					},
+					ExtraParams: map[string]string{
+						"InputFormat":   "Video",
+						"MediaFeatures": "[\"QualityFeature\",\"AestheticsFeature\",\"ContentFeature\",\"AudioFeature\"]",
+					},
+				},
+			},
+			CallbackUrl:    "",
+			CallbackMethod: "",
+			UserData:       "",
+		},
+	}
+	resp, err := client.SubmitMediaProcessJobs(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+}
+
 func TestDescribeMediaProcessJobs(t *testing.T) {
 	client := NewVodClient(nil)
 	client.ServiceInfo.Host = DEMO_HOST_STAGING
