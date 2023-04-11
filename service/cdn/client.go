@@ -12,6 +12,12 @@ func NewCDNClient(httpClient base.HTTPClient) *CDNClient {
 	}
 }
 
+func NewCDNClientV2(httpClient base.HTTPClient, serviceInfo base.ServiceInfo) *CDNClient {
+	return &CDNClient{
+		base.NewClient(httpClient, serviceInfo, ApiList),
+	}
+}
+
 func (c *CDNClient) DescribeCdnLogs(req DescribeCdnLogsRequest) (*DescribeCdnLogsResponse, error) {
 	resp := &DescribeCdnLogsResponse{}
 	err := c.OpenAPI.PostForAPIWithRequestResponse("DescribeCdnLogs", req, resp)

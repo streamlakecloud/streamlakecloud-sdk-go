@@ -1,6 +1,7 @@
 package cdn
 
 import (
+	"net/http"
 	"os"
 	"testing"
 
@@ -118,11 +119,18 @@ func TestGetOriginData(t *testing.T) {
 }
 
 func TestPushPCDNCache(t *testing.T) {
-	client := NewCDNClient(nil)
-	client.ServiceInfo.Host = "vod.streamlakeapi.com"
-	client.ServiceInfo.Credentials = base.Credentials{AccessKey: "", SecretAccessKey: ""}
-	client.ServiceInfo.ProductName = "vod"
-	client.ServiceInfo.Header.Set("Content-Type", "application/json")
+
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   "vod.streamlakeapi.com",
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: "", SecretAccessKey: ""},
+	}
+	client := NewCDNClientV2(nil, serviceInfo)
 
 	req := PushPCDNObjectCacheRequest{
 		FileSets: []PCDNFileSet{
