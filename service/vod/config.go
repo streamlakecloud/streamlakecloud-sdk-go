@@ -105,12 +105,35 @@ var ApiList = map[string]*base.ApiInfo{
 			"Action": []string{"DescribeMediaInfo"},
 		},
 	},
-
 	"DescribeAttachedMediaInfo": {
 		Method: http.MethodPost,
 		Path:   "/",
 		Query: url.Values{
 			"Action": []string{"DescribeAttachedMediaInfo"},
+		},
+	},
+	/*************
+	 * 播放质量
+	 *************/
+	"DescribePlayQualityDataSources": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"DescribePlayQualityDataSources"},
+		},
+	},
+	"DescribePlayQualitySummary": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"DescribePlayQualitySummary"},
+		},
+	},
+	"DescribePlayQualityDetail": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"DescribePlayQualityDetail"},
 		},
 	},
 }

@@ -119,7 +119,6 @@ func TestGetOriginData(t *testing.T) {
 }
 
 func TestPushPCDNCache(t *testing.T) {
-
 	serviceInfo := base.ServiceInfo{
 		Region: "cn-beijing",
 		Scheme: "https",
@@ -153,5 +152,97 @@ func TestPushPCDNCache(t *testing.T) {
 		t.Fatalf("%e", err)
 	} else {
 		t.Logf("got response meta: %+v", resp.ResponseMeta)
+	}
+}
+
+func TestListPcdnDataSources(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   "vod.streamlakeapi.com",
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: "", SecretAccessKey: ""},
+	}
+	client := NewCDNClientV2(nil, serviceInfo)
+
+	req := ListPcdnDataSourcesRequest{
+		StartTime:   "2023-04-26T16:00:00Z",
+		EndTime:     "2023-04-26T17:00:00Z",
+		QueryFilter: []string{"TerminalType", "Province", "ISP"},
+	}
+	resp, err := client.ListPcdnDataSources(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v", resp.ResponseMeta)
+		t.Logf("got response data: %+v", resp.ResponseData.Filter)
+	}
+}
+
+func TestDescribePcdnDataSummary(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   "vod.streamlakeapi.com",
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: "", SecretAccessKey: ""},
+	}
+	client := NewCDNClientV2(nil, serviceInfo)
+
+	req := DescribePcdnDataSummaryRequest{
+		StartTime: "2023-04-19T16:00:00Z",
+		EndTime:   "2023-04-27T17:00:00Z",
+		Metric:    []string{"Traffic", "BandWidth"},
+		Filters: PcdnDataSources{
+			TerminalType: []string{"android", "ios", "others"},
+			Province:     []string{"beijing", "tianjin", "zhejiang", "chongqing"},
+			ISP:          []string{"telecom", "unicom", "mobile"},
+		},
+	}
+	resp, err := client.DescribePcdnDataSummary(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v", resp.ResponseMeta)
+		t.Logf("got response data: %+v", resp.ResponseData)
+	}
+}
+
+func TestDescribePcdnDataDetail(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   "vod.streamlakeapi.com",
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: "", SecretAccessKey: ""},
+	}
+	client := NewCDNClientV2(nil, serviceInfo)
+
+	req := DescribePcdnDataDetailRequest{
+		StartTime: "2023-04-22T16:00:00Z",
+		EndTime:   "2023-04-27T17:00:00Z",
+		Metric:    "Traffic",
+		Interval:  "hour",
+		Filters: PcdnDataSources{
+			TerminalType: []string{"android", "ios", "others"},
+			Province:     []string{"beijing", "tianjin", "zhejiang", "chongqing"},
+			ISP:          []string{"telecom", "unicom", "mobile"},
+		},
+	}
+	resp, err := client.DescribePcdnDataDetail(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v", resp.ResponseMeta)
+		t.Logf("got response data: %+v", resp.ResponseData)
 	}
 }

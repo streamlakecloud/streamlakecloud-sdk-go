@@ -112,3 +112,30 @@ func (v *VodClient) DescribeAttachedMediaInfo(req DescribeAttachedMediaInfoReque
 	}
 	return resp, nil
 }
+
+func (v *VodClient) DescribePlayQualityDataSources(req DescribePlayQualityDataSourcesRequest) (*DescribePlayQualityDataSourcesResponse, error) {
+	resp := &DescribePlayQualityDataSourcesResponse{}
+	err := v.PostForAPIWithRequestResponse("DescribePlayQualityDataSources", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DescribePlayQualitySummary(req DescribePlayQualitySummaryRequest) (*DescribePlayQualitySummaryResponse, error) {
+	resp := &DescribePlayQualitySummaryResponse{}
+	err := v.PostForAPIWithRequestResponse("DescribePlayQualitySummary", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DescribePlayQualityDetail(req DescribePlayQualityDetailRequest) (*DescribePlayQualityDetailResponse, error) {
+	resp := &DescribePlayQualityDetailResponse{}
+	err := v.PostForAPIWithRequestResponse("DescribePlayQualityDetail", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}

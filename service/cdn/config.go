@@ -68,4 +68,25 @@ var ApiList = map[string]*base.ApiInfo{
 			"Action": []string{"PushPCDNObjectCache"},
 		},
 	},
+	"ListPcdnDataSources": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"ListPcdnDataSources"},
+		},
+	},
+	"DescribePcdnDataSummary": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"DescribePcdnDataSummary"},
+		},
+	},
+	"DescribePcdnDataDetail": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"DescribePcdnDataDetail"},
+		},
+	},
 }

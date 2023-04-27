@@ -80,3 +80,30 @@ func (c *CDNClient) PushPCDNCache(req PushPCDNObjectCacheRequest) (*PushPCDNObje
 	}
 	return resp, nil
 }
+
+func (c *CDNClient) ListPcdnDataSources(req ListPcdnDataSourcesRequest) (*ListPcdnDataSourcesResponse, error) {
+	resp := &ListPcdnDataSourcesResponse{}
+	err := c.OpenAPI.PostForAPIWithRequestResponse("ListPcdnDataSources", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CDNClient) DescribePcdnDataSummary(req DescribePcdnDataSummaryRequest) (*DescribePcdnDataSummaryResponse, error) {
+	resp := &DescribePcdnDataSummaryResponse{}
+	err := c.OpenAPI.PostForAPIWithRequestResponse("DescribePcdnDataSummary", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *CDNClient) DescribePcdnDataDetail(req DescribePcdnDataDetailRequest) (*DescribePcdnDataDetailResponse, error) {
+	resp := &DescribePcdnDataDetailResponse{}
+	err := c.OpenAPI.PostForAPIWithRequestResponse("DescribePcdnDataDetail", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}

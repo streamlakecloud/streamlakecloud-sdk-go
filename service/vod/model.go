@@ -304,3 +304,122 @@ type DescribeAttachedMediaInfoResponse struct {
 	ResponseMeta *base.ResponseMeta
 	ResponseData DescribeAttachedMediaInfoResult `json:",omitempty"`
 }
+
+type DescribePlayQualityDataSourcesRequest struct {
+	StartTime   string
+	EndTime     string
+	Metric      string
+	QueryFilter []string
+}
+
+type DescribePlayQualityDataSourcesResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		Metric string
+		Filter PlayQualityFilterResult
+	} `json:",omitempty"`
+}
+
+type PlayQualityFilterResult struct {
+	Province   []string
+	ISP        []string
+	Network    []string
+	Platform   []string
+	AppVersion []string
+	Codec      []string
+	Resolution []string
+}
+
+type DescribePlayQualitySummaryRequest struct {
+	StartTime string
+	EndTime   string
+	Filters   PlayQualityFilterInfo
+	Metric    string
+}
+
+type PlayQualityFilterInfo struct {
+	Domains    []string
+	Province   []string
+	ISP        []string
+	Network    []string
+	Platform   []string
+	AppVersion []string
+	Codec      []string
+	Resolution []string
+}
+
+type DescribePlayQualitySummaryResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		Metric string
+		Data   DescribePlayQualityOverViewDataInfo
+	} `json:",omitempty"`
+}
+
+type DescribePlayQualityOverViewDataInfo struct {
+	PlayPerformance DescribePlayQualityOverViewPlayPerformanceInfo
+	UserExperience  DescribePlayQualityOverViewUserExperienceInfo
+	CdnDownLoad     DescribePlayQualityOverViewCdnDownLoadInfo
+}
+
+type DescribePlayQualityOverViewPlayPerformanceInfo struct {
+	PlayCount                   string
+	ExperienceFirstScreen       string
+	PlayerFirstScreen           string
+	StartPlayFailedRate         string
+	VSF                         string
+	EBVS                        string
+	FrameLossRate               string
+	FrameLossHundredSeconds     string
+	AvgBitrate                  string
+	BlockRate                   string
+	BlockTimeHundredSeconds     string
+	BlockDurationHundredSeconds string
+	FaultAfterPlayRate          string
+}
+
+type DescribePlayQualityOverViewUserExperienceInfo struct {
+	DeviceNum             string
+	AvgPlayNumByDevice    string
+	TotalPlayDuration     string
+	AvgPlayDuration       string
+	AvgPlayDurationDevice string
+	CompleteRate          string
+	PlayCompleteRate      string
+}
+
+type DescribePlayQualityOverViewCdnDownLoadInfo struct {
+	CdnFinishedRate  string
+	CdnFailedRate    string
+	CdnCancelledRate string
+	CdnSlowedRate    string
+}
+
+type DescribePlayQualityDetailRequest struct {
+	StartTime string
+	EndTime   string
+	Filters   PlayQualityFilterInfo
+	Metric    string
+	Interval  string
+	Dimension []string
+	Top       string
+	Sort      string
+}
+
+type DescribePlayQualityDetailResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		Metric string
+		Data   []DescribePlayQualityDetailDataInfo
+	} `json:",omitempty"`
+}
+
+type DescribePlayQualityDetailDataInfo struct {
+	DimensionValue string
+	ValueItem      []DescribePlayQualityDetailDataValueItem
+}
+
+type DescribePlayQualityDetailDataValueItem struct {
+	Value     string
+	TimeStamp string
+}

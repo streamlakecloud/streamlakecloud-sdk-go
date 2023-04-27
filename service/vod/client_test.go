@@ -211,3 +211,77 @@ func TestDescribeMediaProcessJobs(t *testing.T) {
 		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
 	}
 }
+
+func TestDescribePlayQualityFilters(t *testing.T) {
+	client := NewVodClient(nil)
+	client.ServiceInfo.Host = DEMO_HOST_STAGING
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
+	req := DescribePlayQualityDataSourcesRequest{
+		StartTime:   "2023-03-20T16:00:00Z",
+		EndTime:     "2023-03-23T15:59:59Z",
+		Metric:      "PlayPerformance",
+		QueryFilter: []string{"Province", "ISP", "Network"},
+	}
+	resp, err := client.DescribePlayQualityDataSources(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+}
+
+func TestDescribePlayQualityOverView(t *testing.T) {
+	client := NewVodClient(nil)
+	client.ServiceInfo.Host = DEMO_HOST_STAGING
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
+	req := DescribePlayQualitySummaryRequest{
+		StartTime: "2023-03-20T16:00:00Z",
+		EndTime:   "2023-03-23T15:59:59Z",
+		Filters: PlayQualityFilterInfo{
+			Province:   []string{},
+			ISP:        []string{},
+			Network:    []string{},
+			Platform:   []string{},
+			AppVersion: []string{},
+			Codec:      []string{},
+			Resolution: []string{},
+		},
+		Metric: "PlayPerformance",
+	}
+	resp, err := client.DescribePlayQualitySummary(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+}
+
+func TestDescribePlayQualityDetail(t *testing.T) {
+	client := NewVodClient(nil)
+	client.ServiceInfo.Host = DEMO_HOST_STAGING
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
+	req := DescribePlayQualityDetailRequest{
+		StartTime: "2023-03-20T16:00:00Z",
+		EndTime:   "2023-03-23T15:59:59Z",
+		Filters: PlayQualityFilterInfo{
+			Province:   []string{},
+			ISP:        []string{},
+			Network:    []string{},
+			Platform:   []string{},
+			AppVersion: []string{},
+			Codec:      []string{},
+			Resolution: []string{},
+		},
+		Metric:    "PlayCount",
+		Interval:  "5minutes",
+		Dimension: []string{"Domain", "Province"},
+		Top:       "5",
+		Sort:      "AscByAvg",
+	}
+	resp, err := client.DescribePlayQualityDetail(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+}

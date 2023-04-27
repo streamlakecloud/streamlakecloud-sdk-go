@@ -131,3 +131,78 @@ type PCDNFileSet struct {
 type PushPCDNObjectCacheResponse struct {
 	ResponseMeta *base.ResponseMeta
 }
+
+type ListPcdnDataSourcesRequest struct {
+	StartTime   string
+	EndTime     string
+	QueryFilter []string
+}
+
+type PcdnDataSourcesData struct {
+	Name string
+	Code string
+}
+
+type ListPcdnDataSourcesResult struct {
+	Filter *struct {
+		TerminalType []PcdnDataSourcesData
+		Province     []PcdnDataSourcesData
+		ISP          []PcdnDataSourcesData
+	} `json:",omitempty"`
+}
+
+type ListPcdnDataSourcesResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *ListPcdnDataSourcesResult
+}
+
+type PcdnDataSources struct {
+	TerminalType []string
+	Province     []string
+	ISP          []string
+}
+
+type DescribePcdnDataSummaryRequest struct {
+	StartTime string
+	EndTime   string
+	Metric    []string
+	Filters   PcdnDataSources
+}
+
+type PcdnDataSummaryResult struct {
+	Traffic   string
+	BandWidth string
+}
+
+type DescribePcdnDataSummaryResult struct {
+	Data PcdnDataSummaryResult
+}
+
+type DescribePcdnDataSummaryResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *DescribePcdnDataSummaryResult
+}
+
+type DescribePcdnDataDetailRequest struct {
+	StartTime string
+	EndTime   string
+	Metric    string
+	Interval  string
+	Filters   PcdnDataSources
+}
+
+type PcdnDataDetailDataItem struct {
+	TimeStamp string
+	Value     string
+}
+
+type DescribePcdnDataDetailResult struct {
+	Interval string
+	Metric   string
+	Data     []PcdnDataDetailDataItem
+}
+
+type DescribePcdnDataDetailResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *DescribePcdnDataDetailResult
+}
