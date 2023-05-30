@@ -136,6 +136,7 @@ type ListPcdnDataSourcesRequest struct {
 	StartTime   string
 	EndTime     string
 	QueryFilter []string
+	Scene       string
 }
 
 type PcdnDataSourcesData struct {

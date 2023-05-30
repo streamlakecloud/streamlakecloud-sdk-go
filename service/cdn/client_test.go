@@ -172,6 +172,7 @@ func TestListPcdnDataSources(t *testing.T) {
 		StartTime:   "2023-04-26T16:00:00Z",
 		EndTime:     "2023-04-26T17:00:00Z",
 		QueryFilter: []string{"TerminalType", "Province", "ISP", "OriginDomain"},
+		Scene:       "ServerScene",
 	}
 	resp, err := client.ListPcdnDataSources(req)
 	if err != nil {
