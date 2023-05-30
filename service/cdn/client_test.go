@@ -171,7 +171,7 @@ func TestListPcdnDataSources(t *testing.T) {
 	req := ListPcdnDataSourcesRequest{
 		StartTime:   "2023-04-26T16:00:00Z",
 		EndTime:     "2023-04-26T17:00:00Z",
-		QueryFilter: []string{"TerminalType", "Province", "ISP"},
+		QueryFilter: []string{"TerminalType", "Province", "ISP", "OriginDomain"},
 	}
 	resp, err := client.ListPcdnDataSources(req)
 	if err != nil {
@@ -198,11 +198,12 @@ func TestDescribePcdnDataSummary(t *testing.T) {
 	req := DescribePcdnDataSummaryRequest{
 		StartTime: "2023-04-19T16:00:00Z",
 		EndTime:   "2023-04-27T17:00:00Z",
-		Metric:    []string{"Traffic", "BandWidth"},
+		Metric:    []string{"Traffic", "BandWidth", "OriginTraffic", "OriginBandWidth", "SeedHitRate", "ClientQps"},
 		Filters: PcdnDataSources{
 			TerminalType: []string{"android", "ios", "others"},
 			Province:     []string{"beijing", "tianjin", "zhejiang", "chongqing"},
 			ISP:          []string{"telecom", "unicom", "mobile"},
+			OriginDomain: []string{""},
 		},
 	}
 	resp, err := client.DescribePcdnDataSummary(req)
@@ -236,6 +237,7 @@ func TestDescribePcdnDataDetail(t *testing.T) {
 			TerminalType: []string{"android", "ios", "others"},
 			Province:     []string{"beijing", "tianjin", "zhejiang", "chongqing"},
 			ISP:          []string{"telecom", "unicom", "mobile"},
+			OriginDomain: []string{""},
 		},
 	}
 	resp, err := client.DescribePcdnDataDetail(req)

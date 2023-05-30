@@ -148,6 +148,7 @@ type ListPcdnDataSourcesResult struct {
 		TerminalType []PcdnDataSourcesData
 		Province     []PcdnDataSourcesData
 		ISP          []PcdnDataSourcesData
+		OriginDomain []string
 	} `json:",omitempty"`
 }
 
@@ -160,6 +161,7 @@ type PcdnDataSources struct {
 	TerminalType []string
 	Province     []string
 	ISP          []string
+	OriginDomain []string
 }
 
 type DescribePcdnDataSummaryRequest struct {
@@ -170,8 +172,12 @@ type DescribePcdnDataSummaryRequest struct {
 }
 
 type PcdnDataSummaryResult struct {
-	Traffic   string
-	BandWidth string
+	Traffic         string
+	BandWidth       string
+	ClientQps       string
+	OriginTraffic   string
+	OriginBandWidth string
+	SeedHitRate     string
 }
 
 type DescribePcdnDataSummaryResult struct {
