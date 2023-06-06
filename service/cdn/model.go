@@ -173,12 +173,14 @@ type DescribePcdnDataSummaryRequest struct {
 }
 
 type PcdnDataSummaryResult struct {
-	Traffic         string
-	BandWidth       string
-	ClientQps       string
-	OriginTraffic   string
-	OriginBandWidth string
-	SeedHitRate     string
+	Traffic          string
+	BandWidth        string
+	ClientQps        string
+	OriginTraffic    string
+	OriginBandWidth  string
+	SeedHitRate      string
+	PreloadTraffic   string
+	PreloadBandWidth string
 }
 
 type DescribePcdnDataSummaryResult struct {
