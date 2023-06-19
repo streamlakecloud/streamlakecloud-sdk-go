@@ -423,3 +423,33 @@ type DescribePlayQualityDetailDataValueItem struct {
 	Value     string
 	TimeStamp string
 }
+
+type DetectMediaRequest struct {
+	CallbackLink string
+	MediaItemSet MediaItemSet
+}
+
+type MediaItemSet struct {
+	CallbackLink string
+	Bucket       string
+	StoreKey     string
+	ProcessTypes []string
+	MediaType    string
+	ClientInfo   ClientInfo
+	KeyInfo      KeyInfo
+	SourceUrl    string
+}
+
+type ClientInfo struct {
+	TaskId    string
+	TokenName string
+	Token     string
+}
+
+type KeyInfo struct {
+	EncryptionKey string
+}
+
+type DetectMediaResponse struct {
+	ResponseMeta *base.ResponseMeta
+}

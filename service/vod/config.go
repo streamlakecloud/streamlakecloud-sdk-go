@@ -136,4 +136,11 @@ var ApiList = map[string]*base.ApiInfo{
 			"Action": []string{"DescribePlayQualityDetail"},
 		},
 	},
+	"DetectMedia": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"DetectMedia"},
+		},
+	},
 }

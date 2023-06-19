@@ -1,6 +1,7 @@
 package vod
 
 import (
+	"net/http"
 	"os"
 	"testing"
 
@@ -283,5 +284,40 @@ func TestDescribePlayQualityDetail(t *testing.T) {
 		t.Fatalf("%e", err)
 	} else {
 		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+}
+
+func TestDetectMedia(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   "vod.streamlakeapi.com",
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: "", SecretAccessKey: ""},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := DetectMediaRequest{
+		CallbackLink: "https://xxxxxx.xxxxx.com",
+		MediaItemSet: MediaItemSet{
+			Bucket:       "sl-75abxxxxxxxf19469",
+			StoreKey:     "test-xxxxxxxxxxxxx88888.mp4",
+			MediaType:    "IMAGE",
+			ProcessTypes: []string{"Tag"},
+			ClientInfo: ClientInfo{
+				TaskId:    "asfbo1bouasndoin1",
+				TokenName: "abg1hoasnci",
+				Token:     "289ghiusqhoi",
+			},
+		},
+	}
+	resp, err := client.DetectMedia(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v", resp.ResponseMeta)
 	}
 }

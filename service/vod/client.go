@@ -14,6 +14,12 @@ func NewVodClient(httpClient base.HTTPClient) *VodClient {
 	}
 }
 
+func NewVodClientV2(httpClient base.HTTPClient, serviceInfo base.ServiceInfo) *VodClient {
+	return &VodClient{
+		base.NewClient(httpClient, serviceInfo, ApiList),
+	}
+}
+
 func (v *VodClient) ApplyUploadToken(req ApplyUploadTokenRequest) (*ApplyUploadTokenResponse, error) {
 	resp := &ApplyUploadTokenResponse{}
 	err := v.PostForAPIWithRequestResponse("ApplyUploadToken", req, resp)
@@ -134,6 +140,15 @@ func (v *VodClient) DescribePlayQualitySummary(req DescribePlayQualitySummaryReq
 func (v *VodClient) DescribePlayQualityDetail(req DescribePlayQualityDetailRequest) (*DescribePlayQualityDetailResponse, error) {
 	resp := &DescribePlayQualityDetailResponse{}
 	err := v.PostForAPIWithRequestResponse("DescribePlayQualityDetail", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DetectMedia(req DetectMediaRequest) (*DetectMediaResponse, error) {
+	resp := &DetectMediaResponse{}
+	err := v.PostForAPIWithRequestResponse("DetectMedia", req, resp)
 	if err != nil {
 		return nil, err
 	}
