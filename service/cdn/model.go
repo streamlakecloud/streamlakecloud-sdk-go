@@ -146,10 +146,11 @@ type PcdnDataSourcesData struct {
 
 type ListPcdnDataSourcesResult struct {
 	Filter *struct {
-		TerminalType []PcdnDataSourcesData
-		Province     []PcdnDataSourcesData
-		ISP          []PcdnDataSourcesData
-		OriginDomain []string
+		TerminalType  []PcdnDataSourcesData
+		Province      []PcdnDataSourcesData
+		ISP           []PcdnDataSourcesData
+		OriginDomain  []string
+		ClientVersion []string
 	} `json:",omitempty"`
 }
 
@@ -159,10 +160,11 @@ type ListPcdnDataSourcesResponse struct {
 }
 
 type PcdnDataSources struct {
-	TerminalType []string
-	Province     []string
-	ISP          []string
-	OriginDomain []string
+	TerminalType  []string
+	Province      []string
+	ISP           []string
+	OriginDomain  []string
+	ClientVersion []string
 }
 
 type DescribePcdnDataSummaryRequest struct {
@@ -173,14 +175,19 @@ type DescribePcdnDataSummaryRequest struct {
 }
 
 type PcdnDataSummaryResult struct {
-	Traffic          string
-	BandWidth        string
-	ClientQps        string
-	OriginTraffic    string
-	OriginBandWidth  string
-	SeedHitRate      string
-	PreloadTraffic   string
-	PreloadBandWidth string
+	Traffic                        string
+	BandWidth                      string
+	ClientQps                      string
+	OriginTraffic                  string
+	OriginBandWidth                string
+	SeedHitRate                    string
+	PreloadTraffic                 string
+	PreloadBandWidth               string
+	ClientDownloadSuccessRate      string
+	ClientErrorCodeRate            string
+	ClientAvgDownloadSpeed         string
+	ClientFirstPackageTime         string
+	ClientFirstPackageCallbackTime string
 }
 
 type DescribePcdnDataSummaryResult struct {

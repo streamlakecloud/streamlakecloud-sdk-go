@@ -169,10 +169,10 @@ func TestListPcdnDataSources(t *testing.T) {
 	client := NewCDNClientV2(nil, serviceInfo)
 
 	req := ListPcdnDataSourcesRequest{
-		StartTime:   "2023-04-26T16:00:00Z",
-		EndTime:     "2023-04-26T17:00:00Z",
-		QueryFilter: []string{"TerminalType", "Province", "ISP", "OriginDomain"},
-		Scene:       "ServerScene",
+		StartTime:   "2023-06-25T16:00:00Z",
+		EndTime:     "2023-06-25T17:00:00Z",
+		QueryFilter: []string{"TerminalType", "Province", "ISP", "OriginDomain", "ClientVersion"},
+		Scene:       "ClientPerformanceScene",
 	}
 	resp, err := client.ListPcdnDataSources(req)
 	if err != nil {
@@ -197,14 +197,17 @@ func TestDescribePcdnDataSummary(t *testing.T) {
 	client := NewCDNClientV2(nil, serviceInfo)
 
 	req := DescribePcdnDataSummaryRequest{
-		StartTime: "2023-04-19T16:00:00Z",
-		EndTime:   "2023-04-27T17:00:00Z",
-		Metric:    []string{"Traffic", "BandWidth", "OriginTraffic", "OriginBandWidth", "SeedHitRate", "ClientQps"},
+		StartTime: "2023-06-25T16:00:00Z",
+		EndTime:   "2023-06-25T17:00:00Z",
+		Metric: []string{"Traffic", "BandWidth", "OriginTraffic", "OriginBandWidth", "SeedHitRate",
+			"ClientQps", "ClientDownloadSuccessRate", "ClientErrorCodeRate", "ClientAvgDownloadSpeed",
+			"ClientFirstPackageTime", "ClientFirstPackageCallbackTime"},
 		Filters: PcdnDataSources{
-			TerminalType: []string{"android", "ios", "others"},
-			Province:     []string{"beijing", "tianjin", "zhejiang", "chongqing"},
-			ISP:          []string{"telecom", "unicom", "mobile"},
-			OriginDomain: []string{""},
+			TerminalType:  []string{"android", "ios", "others"},
+			Province:      []string{"beijing", "tianjin", "zhejiang", "chongqing"},
+			ISP:           []string{"telecom", "unicom", "mobile"},
+			OriginDomain:  []string{""},
+			ClientVersion: []string{"2.0.0.106"},
 		},
 	}
 	resp, err := client.DescribePcdnDataSummary(req)
@@ -230,15 +233,16 @@ func TestDescribePcdnDataDetail(t *testing.T) {
 	client := NewCDNClientV2(nil, serviceInfo)
 
 	req := DescribePcdnDataDetailRequest{
-		StartTime: "2023-04-22T16:00:00Z",
-		EndTime:   "2023-04-27T17:00:00Z",
-		Metric:    "Traffic",
-		Interval:  "hour",
+		StartTime: "2023-06-25T16:00:00Z",
+		EndTime:   "2023-06-25T17:00:00Z",
+		Metric:    "ClientAvgDownloadSpeed",
+		Interval:  "5minutes",
 		Filters: PcdnDataSources{
-			TerminalType: []string{"android", "ios", "others"},
-			Province:     []string{"beijing", "tianjin", "zhejiang", "chongqing"},
-			ISP:          []string{"telecom", "unicom", "mobile"},
-			OriginDomain: []string{""},
+			TerminalType:  []string{"android", "ios", "others"},
+			Province:      []string{"beijing", "tianjin", "zhejiang", "chongqing"},
+			ISP:           []string{"telecom", "unicom", "mobile"},
+			OriginDomain:  []string{""},
+			ClientVersion: []string{"2.0.0.106"},
 		},
 	}
 	resp, err := client.DescribePcdnDataDetail(req)
