@@ -438,6 +438,7 @@ type MediaItemSet struct {
 	ClientInfo   ClientInfo
 	KeyInfo      KeyInfo
 	SourceUrl    string
+	Text         string
 }
 
 type ClientInfo struct {

@@ -312,6 +312,7 @@ func TestDetectMedia(t *testing.T) {
 				TokenName: "abg1hoasnci",
 				Token:     "289ghiusqhoi",
 			},
+			Text: "风景",
 		},
 	}
 	resp, err := client.DetectMedia(req)
