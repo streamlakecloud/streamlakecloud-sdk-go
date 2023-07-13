@@ -99,7 +99,9 @@ type SubmitWorkflowRequest struct {
 
 type SubmitWorkflowResponse struct {
 	ResponseMeta *base.ResponseMeta
-	ResponseData interface{} `json:",omitempty"`
+	ResponseData *struct {
+		TaskId string
+	} `json:",omitempty"`
 }
 
 type WatermarkSet struct {
@@ -178,9 +180,23 @@ type DescribeMediaProcessJobsResponse struct {
  * Manage *
  *****************************************************************************/
 
+type DeleteMediaRequest struct {
+	MediaId     string            `json:",omitempty"`
+	DeleteItems []MediaDeleteItem `json:",omitempty"`
+}
+type MediaDeleteItem struct {
+	Type       string `json:",omitempty"`
+	TemplateId string `json:",omitempty"`
+}
+
+type DeleteMediaResponse struct {
+	ResponseMeta *base.ResponseMeta
+}
+
 type DescribeMediaInfoRequest struct {
-	MediaId    string // 视频媒资 ID，与 PrimaryKey 二选一
-	PrimaryKey string // 自定义媒资 ID，与 MediaId 二选一
+	MediaId    string   `json:",omitempty"` // 视频媒资 ID，与 PrimaryKey 二选一
+	PrimaryKey string   `json:",omitempty"` // 自定义媒资 ID，与 MediaId 二选一
+	Filters    []string `json:",omitempty"`
 }
 
 type AudioStream struct {
@@ -199,8 +215,18 @@ type VideoStream struct {
 	Rotate   string // one of {"0", "90", "180", "270"}
 	Codec    string
 }
+type BasicInfo struct {
+	SubAppId    string
+	MediaId     string
+	Title       string
+	Description string // in format of YYYY-MM-DDThh:mm:ssZ
+	CoverUrl    string
+	CreateTime  string
+	UpdateTime  string
+}
 type SourceInfo struct {
 	URLPath      string
+	PlayUrl      string
 	Format       string
 	Duration     float64
 	CreateTime   string // in format of YYYY-MM-DDThh:mm:ssZ
@@ -217,6 +243,7 @@ type SourceInfo struct {
 type TranscodeInfo struct {
 	TranscodeTemplateId string
 	URLPath             string
+	PlayUrl             string
 	Format              string
 	Duration            float64
 	CreateTime          string // in format of YYYY-MM-DDThh:mm:ssZ
@@ -230,12 +257,67 @@ type TranscodeInfo struct {
 	HdrType             string // enum, one of {"SDR", "HDR10", "HDR10+", "Dolby Vision", "HLG", "SDR+"}
 	Bitrate             int32  // 文件码率，单位：Kbps
 }
+type SnapshotInfo struct {
+	CoverSnapshotInfos  []CoverSnapshotInfo
+	SampleSnapshotInfos []SampleSnapshotInfo
+	SpriteSnapshotInfos []SpriteSnapshotInfo
+	MaskSnapshotInfos   []MaskSnapshotInfo
+}
+type CoverSnapshotInfo struct {
+	Name        string
+	Type        string
+	Format      string
+	CdnUrl      string
+	UrlPath     string
+	StorageInfo StorageInfo
+	Width       int32
+	Height      int32
+	CreateTime  int64
+}
+type SampleSnapshotInfo struct {
+	Name                   string
+	Type                   string
+	Format                 string
+	SampleSnapshotUrlInfos []SampleSnapshotUrlInfo
+	TemplateId             string
+	Width                  int32
+	Height                 int32
+	CreateTime             int64
+}
+type SampleSnapshotUrlInfo struct {
+	CdnUrl      string
+	UrlPath     string
+	StorageInfo StorageInfo
+}
+type StorageInfo struct {
+	StorageBucket string
+	StorageKey    string
+}
+type SpriteSnapshotInfo struct {
+	Name        string
+	Type        string
+	CdnUrl      string
+	UrlPath     string
+	TemplateId  string
+	CreateTime  int64
+	StorageInfo StorageInfo
+}
+type MaskSnapshotInfo struct {
+	Name        string
+	Type        string
+	CdnUrl      string
+	UrlPath     string
+	CreateTime  string
+	StorageInfo StorageInfo
+}
 
 type DescribeMediaInfoResult struct {
 	MediaId        string `json:",omitempty"`
 	PrimaryKey     string `json:",omitempty"`
+	BasicInfo      BasicInfo
 	SourceInfo     SourceInfo
 	TranscodeInfos []TranscodeInfo
+	SnapshotInfo   SnapshotInfo
 }
 
 type DescribeMediaInfoResponse struct {
@@ -453,4 +535,498 @@ type KeyInfo struct {
 
 type DetectMediaResponse struct {
 	ResponseMeta *base.ResponseMeta
+}
+
+type CreateTranscodeTemplateRequest struct {
+	TranscodeTemplate TranscodeTemplate
+}
+
+type TranscodeTemplate struct {
+	TemplateId           string        `json:",omitempty"`
+	Name                 string        `json:",omitempty"`
+	Description          string        `json:",omitempty"`
+	Container            string        `json:",omitempty"`
+	RemoveAudio          string        `json:",omitempty"`
+	VideoTemplate        VideoTemplate `json:",omitempty"`
+	AudioTemplate        AudioTemplate `json:",omitempty"`
+	WatermarkTemplateIds []string      `json:",omitempty"`
+}
+
+type VideoTemplate struct {
+	Codec         string `json:",omitempty"`
+	Fps           int    `json:",omitempty"`
+	MaxBitrate    int    `json:",omitempty"`
+	LongShortMode string `json:",omitempty"`
+	Width         int    `json:",omitempty"`
+	Height        int    `json:",omitempty"`
+	Crf           int    `json:",omitempty"`
+	Gop           int    `json:",omitempty"`
+}
+
+type AudioTemplate struct {
+	Codec      string `json:",omitempty"`
+	Bitrate    int    `json:",omitempty"`
+	SampleRate int    `json:",omitempty"`
+}
+
+type CreateTranscodeTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		TranscodeTemplateId string
+	} `json:",omitempty"`
+}
+
+type UpdateTranscodeTemplateRequest struct {
+	TranscodeTemplateId string            `json:",omitempty"`
+	TranscodeTemplate   TranscodeTemplate `json:",omitempty"`
+}
+
+type UpdateTranscodeTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		TranscodeTemplateId string
+	} `json:",omitempty"`
+}
+
+type DescribeTranscodeTemplateRequest struct {
+	TranscodeTemplateId string `json:",omitempty"`
+}
+
+type DescribeTranscodeTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		CreateTime        string
+		UpdateTime        string
+		TranscodeTemplate TranscodeTemplate
+	} `json:",omitempty"`
+}
+
+type ListTranscodeTemplateRequest struct {
+	Offset int32 `json:",omitempty"`
+	Limit  int32 `json:",omitempty"`
+}
+
+type ListTranscodeTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		TranscodeTemplates []TranscodeTemplate
+		Limit              int32
+		Offset             int32
+		Total              int32
+	} `json:",omitempty"`
+}
+
+type DeleteTranscodeTemplateRequest struct {
+	TranscodeTemplateId string `json:",omitempty"`
+}
+
+type DeleteTranscodeTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+	} `json:",omitempty"`
+}
+
+type CreateWatermarkTemplateRequest struct {
+	WatermarkTemplate WatermarkTemplate `json:",omitempty"`
+}
+
+type WatermarkTemplate struct {
+	TemplateId    string        `json:",omitempty"`
+	Name          string        `json:",omitempty"`
+	Description   string        `json:",omitempty"`
+	Type          string        `json:",omitempty"`
+	ReferPosition string        `json:",omitempty"`
+	MarginX       string        `json:",omitempty"`
+	MarginY       string        `json:",omitempty"`
+	ImageTemplate ImageTemplate `json:",omitempty"`
+	TextTemplate  TextTemplate  `json:",omitempty"`
+}
+
+type ImageTemplate struct {
+	Resource Resource `json:",omitempty"`
+	Width    string   `json:",omitempty"`
+	Height   string   `json:",omitempty"`
+}
+
+type Resource struct {
+	Bucket string `json:",omitempty"`
+	Object string `json:",omitempty"`
+}
+
+type TextTemplate struct {
+	FontType  string `json:",omitempty"`
+	Text      string `json:",omitempty"`
+	FontSize  int32  `json:",omitempty"`
+	FontColor string `json:",omitempty"`
+}
+
+type CreateWatermarkTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		WatermarkTemplateId string
+	} `json:",omitempty"`
+}
+
+type UpdateWatermarkTemplateRequest struct {
+	WatermarkTemplateId string            `json:",omitempty"`
+	WatermarkTemplate   WatermarkTemplate `json:",omitempty"`
+}
+
+type UpdateWatermarkTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		WatermarkTemplateId string
+	} `json:",omitempty"`
+}
+
+type DescribeWatermarkTemplateRequest struct {
+	WatermarkTemplateId string `json:",omitempty"`
+}
+
+type DescribeWatermarkTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		CreateTime        string
+		UpdateTime        string
+		WatermarkTemplate WatermarkTemplate
+	} `json:",omitempty"`
+}
+
+type ListWatermarkTemplateRequest struct {
+	Offset int32 `json:",omitempty"`
+	Limit  int32 `json:",omitempty"`
+}
+
+type ListWatermarkTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		WatermarkTemplates []WatermarkTemplate
+		Limit              int32
+		Offset             int32
+		Total              int32
+	} `json:",omitempty"`
+}
+
+type DeleteWatermarkTemplateRequest struct {
+	WatermarkTemplateId string `json:",omitempty"`
+}
+
+type DeleteWatermarkTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+	} `json:",omitempty"`
+}
+
+type CreateSnapshotTemplateRequest struct {
+	TemplateType                 string                       `json:",omitempty"`
+	SnapshotByTimeOffsetTemplate SnapshotByTimeOffsetTemplate `json:",omitempty"`
+	SampleSnapshotTemplate       SampleSnapshotTemplate       `json:",omitempty"`
+	ImageSpriteTemplate          ImageSpriteTemplate          `json:",omitempty"`
+}
+
+type SnapshotByTimeOffsetTemplate struct {
+	SnapshotTemplateId string `json:",omitempty"`
+	Name               string `json:",omitempty"`
+	Description        string `json:",omitempty"`
+	Format             string `json:",omitempty"`
+	Width              int32  `json:",omitempty"`
+	Height             int32  `json:",omitempty"`
+	OffsetTime         int32  `json:",omitempty"`
+}
+
+type SampleSnapshotTemplate struct {
+	SnapshotTemplateId string `json:",omitempty"`
+	Name               string `json:",omitempty"`
+	Description        string `json:",omitempty"`
+	SampleType         string `json:",omitempty"`
+	Interval           int32  `json:",omitempty"`
+	Format             string `json:",omitempty"`
+	Count              int64  `json:",omitempty"`
+	Width              int32  `json:",omitempty"`
+	Height             int32  `json:",omitempty"`
+	OffsetTime         int32  `json:",omitempty"`
+}
+
+type ImageSpriteTemplate struct {
+	SnapshotTemplateId string `json:",omitempty"`
+	Name               string `json:",omitempty"`
+	Description        string `json:",omitempty"`
+	SampleType         string `json:",omitempty"`
+	SampleInterval     int32  `json:",omitempty"`
+	RowCount           int32  `json:",omitempty"`
+	ColumnCount        int32  `json:",omitempty"`
+	Width              int32  `json:",omitempty"`
+	Height             int32  `json:",omitempty"`
+	Format             string `json:",omitempty"`
+}
+
+type CreateSnapshotTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		SnapshotTemplateId string
+	} `json:",omitempty"`
+}
+
+type UpdateSnapshotTemplateRequest struct {
+	TemplateType                 string                       `json:",omitempty"`
+	SnapshotTemplateId           string                       `json:",omitempty"`
+	SnapshotByTimeOffsetTemplate SnapshotByTimeOffsetTemplate `json:",omitempty"`
+	SampleSnapshotTemplate       SampleSnapshotTemplate       `json:",omitempty"`
+	ImageSpriteTemplate          ImageSpriteTemplate          `json:",omitempty"`
+}
+
+type UpdateSnapshotTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		SnapshotTemplateId string
+		TemplateType       string
+	} `json:",omitempty"`
+}
+
+type DescribeSnapshotTemplateRequest struct {
+	TemplateType       string `json:",omitempty"`
+	SnapshotTemplateId string `json:",omitempty"`
+}
+
+type DescribeSnapshotTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		CreateTime                   string
+		UpdateTime                   string
+		TemplateType                 string
+		SnapshotByTimeOffsetTemplate SnapshotByTimeOffsetTemplate
+		SampleSnapshotTemplate       SampleSnapshotTemplate
+		ImageSpriteTemplate          ImageSpriteTemplate
+	} `json:",omitempty"`
+}
+
+type ListSnapshotTemplateRequest struct {
+	TemplateType string `json:",omitempty"`
+	Offset       int32  `json:",omitempty"`
+	Limit        int32  `json:",omitempty"`
+}
+
+type ListSnapshotTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		SnapshotByTimeOffsetTemplates []SnapshotByTimeOffsetTemplate
+		SampleSnapshotTemplates       []SampleSnapshotTemplate
+		ImageSpriteTemplates          []ImageSpriteTemplate
+	} `json:",omitempty"`
+}
+
+type DeleteSnapshotTemplateRequest struct {
+	TemplateType       string `json:",omitempty"`
+	SnapshotTemplateId string `json:",omitempty"`
+}
+
+type DeleteSnapshotTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+	} `json:",omitempty"`
+}
+
+type CreateWorkflowTemplateRequest struct {
+	MediaProcessWorkflowTemplate MediaProcessWorkflowTemplate `json:",omitempty"`
+}
+
+type MediaProcessWorkflowTemplate struct {
+	WorkflowId                string                     `json:",omitempty"`
+	WorkflowName              string                     `json:",omitempty"`
+	Description               string                     `json:",omitempty"`
+	TranscodeTasks            []TranscodeTask            `json:",omitempty"`
+	SnapshotByTimeOffsetTasks []SnapshotByTimeOffsetTask `json:",omitempty"`
+	SampleSnapshotTasks       []SampleSnapshotTask       `json:",omitempty"`
+	ImageSpriteTasks          []ImageSpriteTask          `json:",omitempty"`
+}
+
+type TranscodeTask struct {
+	TemplateId string `json:",omitempty"`
+}
+
+type SnapshotByTimeOffsetTask struct {
+	TemplateId string `json:",omitempty"`
+}
+
+type SampleSnapshotTask struct {
+	TemplateId string `json:",omitempty"`
+}
+
+type ImageSpriteTask struct {
+	TemplateId string `json:",omitempty"`
+}
+
+type CreateWorkflowTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		WorkflowId string
+	} `json:",omitempty"`
+}
+
+type UpdateWorkflowTemplateRequest struct {
+	WorkflowId                   string                       `json:",omitempty"`
+	MediaProcessWorkflowTemplate MediaProcessWorkflowTemplate `json:",omitempty"`
+}
+
+type UpdateWorkflowTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		WorkflowId string
+	} `json:",omitempty"`
+}
+
+type ListWorkflowTemplateRequest struct {
+	Names  []string `json:",omitempty"`
+	Offset int32    `json:",omitempty"`
+	Limit  int32    `json:",omitempty"`
+}
+
+type ListWorkflowTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		MediaProcessWorkflowTemplates []MediaProcessWorkflowTemplate
+		Limit                         int32
+		Offset                        int32
+		Total                         int32
+	} `json:",omitempty"`
+}
+
+type DeleteWorkflowTemplateRequest struct {
+	WorkflowId string `json:",omitempty"`
+}
+
+type DeleteWorkflowTemplateResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+	} `json:",omitempty"`
+}
+
+type DescribeTaskDetailRequest struct {
+	TaskId string `json:",omitempty"`
+}
+
+type DescribeTaskDetailResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		TaskType           string
+		CreateTime         string
+		BeginProcessTime   string
+		FinishTime         string
+		WorkflowTaskResult WorkflowTaskResult
+	} `json:",omitempty"`
+}
+
+type WorkflowTaskResult struct {
+	TaskId                  string                   `json:",omitempty"`
+	Status                  string                   `json:",omitempty"`
+	MediaId                 string                   `json:",omitempty"`
+	Metadata                Metadata                 `json:",omitempty"`
+	MediaProcessTaskResults []MediaProcessTaskResult `json:",omitempty"`
+}
+
+type Metadata struct {
+	FileSize        int64         `json:",omitempty"`
+	Height          int32         `json:",omitempty"`
+	Width           int32         `json:",omitempty"`
+	Bitrate         int32         `json:",omitempty"`
+	Duration        float64       `json:",omitempty"`
+	Fps             int32         `json:",omitempty"`
+	Format          string        `json:",omitempty"`
+	VideoMaxBitrate int64         `json:",omitempty"`
+	VideoStreams    []VideoStream `json:",omitempty"`
+	AudioStreams    []AudioStream `json:",omitempty"`
+}
+
+type MediaProcessTaskResult struct {
+	Type                           string                         `json:",omitempty"`
+	TranscodeTaskResult            TranscodeTaskResult            `json:",omitempty"`
+	SnapshotByTimeOffsetTaskResult SnapshotByTimeOffsetTaskResult `json:",omitempty"`
+	SampleSnapshotTaskResult       SampleSnapshotTaskResult       `json:",omitempty"`
+	ImageSpriteTaskResult          ImageSpriteTaskResult          `json:",omitempty"`
+}
+
+type TranscodeTaskResult struct {
+	Status           string             `json:",omitempty"`
+	Input            TranscodeTaskInput `json:",omitempty"`
+	BeginProcessTime string             `json:",omitempty"`
+	FinishTime       string             `json:",omitempty"`
+}
+
+type SnapshotByTimeOffsetTaskResult struct {
+	Status           string                        `json:",omitempty"`
+	Input            SnapshotByTimeOffsetTaskInput `json:",omitempty"`
+	BeginProcessTime string                        `json:",omitempty"`
+	FinishTime       string                        `json:",omitempty"`
+}
+
+type SampleSnapshotTaskResult struct {
+	Status           string                  `json:",omitempty"`
+	Input            SampleSnapshotTaskInput `json:",omitempty"`
+	BeginProcessTime string                  `json:",omitempty"`
+	FinishTime       string                  `json:",omitempty"`
+}
+
+type ImageSpriteTaskResult struct {
+	Status           string               `json:",omitempty"`
+	Input            ImageSpriteTaskInput `json:",omitempty"`
+	BeginProcessTime string               `json:",omitempty"`
+	FinishTime       string               `json:",omitempty"`
+}
+
+type TranscodeTaskInput struct {
+	TemplateId string `json:",omitempty"`
+}
+
+type SnapshotByTimeOffsetTaskInput struct {
+	TemplateId string `json:",omitempty"`
+}
+
+type SampleSnapshotTaskInput struct {
+	TemplateId string `json:",omitempty"`
+}
+
+type ImageSpriteTaskInput struct {
+	TemplateId string `json:",omitempty"`
+}
+
+type ApplyUploadInfoRequest struct {
+	SessionKey string `json:",omitempty"`
+	MediaSort  string `json:",omitempty"`
+	FilePath   string `json:",omitempty"`
+	Format     string `json:",omitempty"`
+}
+
+type ApplyUploadInfoResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		SessionKey    string
+		UploadAddress UploadAddress
+		UploadAuth    UploadAuth
+	} `json:",omitempty"`
+}
+
+type UploadAddress struct {
+	StorageBucket  string `json:",omitempty"`
+	Region         string `json:",omitempty"`
+	UploadEndpoint string `json:",omitempty"`
+	UploadPath     string `json:",omitempty"`
+}
+
+type UploadAuth struct {
+	SecretId    string `json:",omitempty"`
+	SecretKey   string `json:",omitempty"`
+	Token       string `json:",omitempty"`
+	ExpiredTime int64  `json:",omitempty"`
+}
+
+type CommitUploadRequest struct {
+	SessionKey string `json:",omitempty"`
+}
+
+type CommitUploadResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		MediaId   string `json:",omitempty"`
+		MediaSort string `json:",omitempty"`
+	} `json:",omitempty"`
 }

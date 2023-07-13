@@ -110,6 +110,15 @@ func (v *VodClient) DescribeMediaInfo(req DescribeMediaInfoRequest) (*DescribeMe
 	return resp, nil
 }
 
+func (v *VodClient) DeleteMedia(req DeleteMediaRequest) (*DeleteMediaResponse, error) {
+	resp := &DeleteMediaResponse{}
+	err := v.PostForAPIWithRequestResponse("DeleteMedia", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (v *VodClient) DescribeAttachedMediaInfo(req DescribeAttachedMediaInfoRequest) (*DescribeAttachedMediaInfoResponse, error) {
 	resp := &DescribeAttachedMediaInfoResponse{}
 	err := v.PostForAPIWithRequestResponse("DescribeAttachedMediaInfo", req, resp)
@@ -149,6 +158,204 @@ func (v *VodClient) DescribePlayQualityDetail(req DescribePlayQualityDetailReque
 func (v *VodClient) DetectMedia(req DetectMediaRequest) (*DetectMediaResponse, error) {
 	resp := &DetectMediaResponse{}
 	err := v.PostForAPIWithRequestResponse("DetectMedia", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) CreateTranscodeTemplate(req CreateTranscodeTemplateRequest) (*CreateTranscodeTemplateResponse, error) {
+	resp := &CreateTranscodeTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("CreateTranscodeTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) UpdateTranscodeTemplate(req UpdateTranscodeTemplateRequest) (*UpdateTranscodeTemplateResponse, error) {
+	resp := &UpdateTranscodeTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("UpdateTranscodeTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DescribeTranscodeTemplate(req DescribeTranscodeTemplateRequest) (*DescribeTranscodeTemplateResponse, error) {
+	resp := &DescribeTranscodeTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("DescribeTranscodeTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) ListTranscodeTemplate(req ListTranscodeTemplateRequest) (*ListTranscodeTemplateResponse, error) {
+	resp := &ListTranscodeTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("ListTranscodeTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DeleteTranscodeTemplate(req DeleteTranscodeTemplateRequest) (*DeleteTranscodeTemplateResponse, error) {
+	resp := &DeleteTranscodeTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("DeleteTranscodeTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) CreateWatermarkTemplate(req CreateWatermarkTemplateRequest) (*CreateWatermarkTemplateResponse, error) {
+	resp := &CreateWatermarkTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("CreateWatermarkTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) UpdateWatermarkTemplate(req UpdateWatermarkTemplateRequest) (*UpdateWatermarkTemplateResponse, error) {
+	resp := &UpdateWatermarkTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("UpdateWatermarkTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DescribeWatermarkTemplate(req DescribeWatermarkTemplateRequest) (*DescribeWatermarkTemplateResponse, error) {
+	resp := &DescribeWatermarkTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("DescribeWatermarkTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) ListWatermarkTemplate(req ListWatermarkTemplateRequest) (*ListWatermarkTemplateResponse, error) {
+	resp := &ListWatermarkTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("ListWatermarkTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DeleteWatermarkTemplate(req DeleteWatermarkTemplateRequest) (*DeleteWatermarkTemplateResponse, error) {
+	resp := &DeleteWatermarkTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("DeleteWatermarkTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) CreateSnapshotTemplate(req CreateSnapshotTemplateRequest) (*CreateSnapshotTemplateResponse, error) {
+	resp := &CreateSnapshotTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("CreateSnapshotTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) UpdateSnapshotTemplate(req UpdateSnapshotTemplateRequest) (*UpdateSnapshotTemplateResponse, error) {
+	resp := &UpdateSnapshotTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("UpdateSnapshotTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DescribeSnapshotTemplate(req DescribeSnapshotTemplateRequest) (*DescribeSnapshotTemplateResponse, error) {
+	resp := &DescribeSnapshotTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("DescribeSnapshotTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) ListSnapshotTemplate(req ListSnapshotTemplateRequest) (*ListSnapshotTemplateResponse, error) {
+	resp := &ListSnapshotTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("ListSnapshotTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DeleteSnapshotTemplate(req DeleteSnapshotTemplateRequest) (*DeleteSnapshotTemplateResponse, error) {
+	resp := &DeleteSnapshotTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("DeleteSnapshotTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) CreateWorkflowTemplate(req CreateWorkflowTemplateRequest) (*CreateWorkflowTemplateResponse, error) {
+	resp := &CreateWorkflowTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("CreateWorkflowTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) UpdateWorkflowTemplate(req UpdateWorkflowTemplateRequest) (*UpdateWorkflowTemplateResponse, error) {
+	resp := &UpdateWorkflowTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("UpdateWorkflowTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) ListWorkflowTemplate(req ListWorkflowTemplateRequest) (*ListWorkflowTemplateResponse, error) {
+	resp := &ListWorkflowTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("ListWorkflowTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DeleteWorkflowTemplate(req DeleteWorkflowTemplateRequest) (*DeleteWorkflowTemplateResponse, error) {
+	resp := &DeleteWorkflowTemplateResponse{}
+	err := v.PostForAPIWithRequestResponse("DeleteWorkflowTemplate", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DescribeTaskDetail(req DescribeTaskDetailRequest) (*DescribeTaskDetailResponse, error) {
+	resp := &DescribeTaskDetailResponse{}
+	err := v.PostForAPIWithRequestResponse("DescribeTaskDetail", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) ApplyUploadInfo(req ApplyUploadInfoRequest) (*ApplyUploadInfoResponse, error) {
+	resp := &ApplyUploadInfoResponse{}
+	err := v.PostForAPIWithRequestResponse("ApplyUploadInfo", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) CommitUpload(req CommitUploadRequest) (*CommitUploadResponse, error) {
+	resp := &CommitUploadResponse{}
+	err := v.PostForAPIWithRequestResponse("CommitUpload", req, resp)
 	if err != nil {
 		return nil, err
 	}

@@ -13,8 +13,8 @@ import (
 
 func TestExchangeVodUploadTokenInfo(t *testing.T) {
 	client := NewVodClient(nil)
-	client.ServiceInfo.Host = DEMO_HOST_STAGING
-	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
+	client.ServiceInfo.Host = HOST_ENDPOINT
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST}
 
 	// stage 1: apply upload token
 	req := ApplyUploadTokenRequest{
@@ -45,8 +45,8 @@ func TestExchangeVodUploadTokenInfo(t *testing.T) {
 
 func TestFileUploadToken(t *testing.T) {
 	client := NewVodClient(nil)
-	client.ServiceInfo.Host = DEMO_HOST_STAGING
-	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
+	client.ServiceInfo.Host = HOST_ENDPOINT
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST}
 
 	// stage 1: apply upload token
 	req := ApplyUploadTokenRequest{
@@ -132,8 +132,8 @@ func TestUploadImageFile(t *testing.T) {
 		t.Fatalf("%e", err)
 	}
 	client := NewVodClient(nil)
-	client.ServiceInfo.Host = DEMO_HOST_STAGING
-	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
+	client.ServiceInfo.Host = HOST_ENDPOINT
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST}
 
 	// stage 1: apply upload token
 	req := ApplyUploadTokenRequest{
@@ -176,8 +176,8 @@ func TestUploadVideoFileWithoutCover(t *testing.T) {
 		t.Fatalf("%e", err)
 	}
 	client := NewVodClient(nil)
-	client.ServiceInfo.Host = DEMO_HOST_STAGING
-	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
+	client.ServiceInfo.Host = HOST_ENDPOINT
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST}
 
 	// stage 1: apply upload token
 	req := ApplyUploadTokenRequest{
@@ -227,8 +227,8 @@ func TestUploadVideoFileWithCover(t *testing.T) {
 		t.Fatalf("%e", errImageDownload)
 	}
 	client := NewVodClient(nil)
-	client.ServiceInfo.Host = DEMO_HOST_STAGING
-	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY, SecretAccessKey: DEMO_TEST_SECRET_KEY}
+	client.ServiceInfo.Host = HOST_ENDPOINT
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST}
 
 	// stage 1: apply upload token
 	req := ApplyUploadTokenRequest{
