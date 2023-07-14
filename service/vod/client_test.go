@@ -2,14 +2,12 @@ package vod
 
 import (
 	"encoding/json"
+	"github.com/streamlakecloud/streamlakecloud-sdk-go/base"
+	"github.com/stretchr/testify/assert"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"testing"
-	"time"
-
-	"github.com/streamlakecloud/streamlakecloud-sdk-go/base"
 )
 
 var (
@@ -402,6 +400,37 @@ func TestCreateTranscodeTemplate1(t *testing.T) {
 	}
 }
 
+func TestCreateTranscodeTemplateRemoveAudio(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := CreateTranscodeTemplateRequest{
+		TranscodeTemplate: TranscodeTemplate{
+			VideoTemplate: VideoTemplate{
+				Fps:        20,
+				MaxBitrate: 2000,
+			},
+			RemoveAudio: "true",
+		},
+	}
+	resp, err := client.CreateTranscodeTemplate(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v", resp.ResponseMeta)
+		t.Logf("got response data: %+v", resp.ResponseData)
+	}
+}
+
 func TestCreateTranscodeTemplate2(t *testing.T) {
 	serviceInfo := base.ServiceInfo{
 		Region: "cn-beijing",
@@ -417,20 +446,19 @@ func TestCreateTranscodeTemplate2(t *testing.T) {
 
 	req := CreateTranscodeTemplateRequest{
 		TranscodeTemplate: TranscodeTemplate{
-			TemplateId:  "TemplateId-0",
-			Name:        "TranscodeTemplate-" + time.Now().Format("2006-01-02-15-04-05"),
+			Name:        "TranscodeTemplate_12345",
 			Description: "test",
-			Container:   "mp4",
+			Container:   "hls",
 			RemoveAudio: "false",
 			VideoTemplate: VideoTemplate{
-				Codec:         "libx264",
+				Codec:         "libx265",
 				Fps:           20,
-				MaxBitrate:    2000,
+				MaxBitrate:    3000,
 				LongShortMode: "true",
-				Width:         0,
-				Height:        0,
+				Width:         50,
+				Height:        20,
 				Crf:           18,
-				Gop:           10,
+				Gop:           30,
 			},
 			AudioTemplate: AudioTemplate{
 				Codec:      "mp3",
@@ -465,7 +493,7 @@ func TestUpdateTranscodeTemplate1(t *testing.T) {
 	req := UpdateTranscodeTemplateRequest{
 		TranscodeTemplateId: "e67524fc-fba3-45b7-a040-da6a92ccb787",
 		TranscodeTemplate: TranscodeTemplate{
-			Name: "transcode:" + time.Now().String(),
+			Name: "transcode_" + "only_test_1",
 		},
 	}
 	resp, err := client.UpdateTranscodeTemplate(req)
@@ -494,7 +522,7 @@ func TestUpdateTranscodeTemplate2(t *testing.T) {
 		TranscodeTemplateId: "e67524fc-fba3-45b7-a040-da6a92ccb787",
 		TranscodeTemplate: TranscodeTemplate{
 			TemplateId:  "TemplateId-0",
-			Name:        "TranscodeTemplate-" + time.Now().Format("2006-01-02-15-04-05"),
+			Name:        "TranscodeTemplate:" + "test-name-template_124",
 			Description: "test",
 			Container:   "mp4",
 			RemoveAudio: "false",
@@ -539,7 +567,7 @@ func TestDescribeTranscodeTemplate(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 
 	req := DescribeTranscodeTemplateRequest{
-		TranscodeTemplateId: "e67524fc-fba3-45b7-a040-da6a92ccb787",
+		TranscodeTemplateId: "272dd39c-bf28-4753-b936-4e7836f80f5c",
 	}
 	resp, err := client.DescribeTranscodeTemplate(req)
 	if err != nil {
@@ -548,6 +576,29 @@ func TestDescribeTranscodeTemplate(t *testing.T) {
 		t.Logf("got response meta: %+v", resp.ResponseMeta)
 		t.Logf("got response data: %+v", resp.ResponseData)
 	}
+}
+
+func TestDescribeTranscodeTemplateIdxxx(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := DescribeTranscodeTemplateRequest{
+		TranscodeTemplateId: "xxx",
+	}
+	_, err := client.DescribeTranscodeTemplate(req)
+
+	assert.Contains(t, err.Error(), "404")
+	assert.Contains(t, err.Error(), "ResourceNotFound")
+	assert.Contains(t, err.Error(), "TranscodeTemplate does not exist")
 }
 
 func TestListTranscodeTemplate1(t *testing.T) {
@@ -587,8 +638,8 @@ func TestListTranscodeTemplate2(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 
 	req := ListTranscodeTemplateRequest{
-		Offset: 2,
-		Limit:  1,
+		Offset: 4,
+		Limit:  45,
 	}
 	resp, err := client.ListTranscodeTemplate(req)
 	if err != nil {
@@ -597,6 +648,30 @@ func TestListTranscodeTemplate2(t *testing.T) {
 		t.Logf("got response meta: %+v", resp.ResponseMeta)
 		t.Logf("got response data: %+v", resp.ResponseData)
 	}
+}
+
+func TestListTranscodeTemplateError(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := ListTranscodeTemplateRequest{
+		Offset: 4,
+		Limit:  51,
+	}
+	_, err := client.ListTranscodeTemplate(req)
+
+	assert.Contains(t, err.Error(), "400")
+	assert.Contains(t, err.Error(), "InvalidArgument")
+	assert.Contains(t, err.Error(), "Limit is over 50")
 }
 
 func TestDeleteTranscodeTemplate(t *testing.T) {
@@ -615,12 +690,10 @@ func TestDeleteTranscodeTemplate(t *testing.T) {
 	req := DeleteTranscodeTemplateRequest{
 		TranscodeTemplateId: "2c2a7d34-f4aa-48d9-99c0-ecdfec8ec0bc",
 	}
-	resp, err := client.DeleteTranscodeTemplate(req)
-	if err != nil {
-		t.Fatalf("%e", err)
-	} else {
-		t.Logf("got response meta: %+v", resp.ResponseMeta)
-	}
+	_, err := client.DeleteTranscodeTemplate(req)
+	assert.Contains(t, err.Error(), "404")
+	assert.Contains(t, err.Error(), "ResourceNotFound")
+	assert.Contains(t, err.Error(), "TranscodeTemplate does not exist")
 }
 
 func TestCreateWatermarkTemplate1(t *testing.T) {
@@ -638,10 +711,10 @@ func TestCreateWatermarkTemplate1(t *testing.T) {
 
 	req := CreateWatermarkTemplateRequest{
 		WatermarkTemplate: WatermarkTemplate{
-			Name: "watermark:" + time.Now().String(),
+			Name: "watermark_" + "only_test_1",
 			Type: "text",
 			TextTemplate: TextTemplate{
-				Text: "test:" + time.Now().String(),
+				Text: "test:" + "only_test_1",
 			},
 		},
 	}
@@ -669,7 +742,7 @@ func TestCreateWatermarkTemplate2(t *testing.T) {
 
 	req := CreateWatermarkTemplateRequest{
 		WatermarkTemplate: WatermarkTemplate{
-			Name: "watermark:" + time.Now().String(),
+			Name: "watermark-" + "only_test_1",
 			Type: "image",
 			ImageTemplate: ImageTemplate{
 				Resource: Resource{
@@ -704,15 +777,15 @@ func TestCreateWatermarkTemplate3(t *testing.T) {
 	req := CreateWatermarkTemplateRequest{
 		WatermarkTemplate: WatermarkTemplate{
 			TemplateId:    "WatermarkTemplate-0",
-			Name:          "watermark:" + time.Now().Format("2006-01-02-15-04-05"),
+			Name:          "watermark-" + "only_test_name",
 			Description:   "test",
 			Type:          "text",
 			ReferPosition: "topLeft",
-			MarginX:       "0",
-			MarginY:       "0",
+			MarginX:       "0.43",
+			MarginY:       "0.02",
 			TextTemplate: TextTemplate{
 				FontType:  "SourceHanSans",
-				Text:      "test:" + time.Now().Format("2006-01-02-15-04-05"),
+				Text:      "test:" + "test-name-template_124",
 				FontSize:  40,
 				FontColor: "#FF0000",
 			},
@@ -743,19 +816,19 @@ func TestCreateWatermarkTemplate4(t *testing.T) {
 	req := CreateWatermarkTemplateRequest{
 		WatermarkTemplate: WatermarkTemplate{
 			TemplateId:    "WatermarkTemplate-0",
-			Name:          "watermark:" + time.Now().Format("2006-01-02-15-04-05"),
+			Name:          "watermark:" + "test-name-template_124",
 			Description:   "test",
 			Type:          "image",
 			ReferPosition: "topLeft",
-			MarginX:       "0",
-			MarginY:       "0",
+			MarginX:       "0.99999",
+			MarginY:       "0.99999999",
 			ImageTemplate: ImageTemplate{
 				Resource: Resource{
 					Bucket: "mediacloud-streamlake-app_video",
 					Object: "cdn_test_pic.png",
 				},
-				Width:  "0.1",
-				Height: "0.1",
+				Width:  "0.9999",
+				Height: "0.9999",
 			},
 		},
 	}
@@ -784,9 +857,9 @@ func TestUpdateWatermarkTemplate1(t *testing.T) {
 	req := UpdateWatermarkTemplateRequest{
 		WatermarkTemplateId: "db6a7898-e6c4-43d5-9b28-d44a6a1aad1b",
 		WatermarkTemplate: WatermarkTemplate{
-			Name: "watermark:" + time.Now().String(),
+			Name: "watermark---" + "only_test_1",
 			TextTemplate: TextTemplate{
-				Text: "test" + time.Now().String(),
+				Text: "test___" + "only_test_1",
 			},
 		},
 	}
@@ -813,30 +886,28 @@ func TestUpdateWatermarkTemplate2(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 
 	req := UpdateWatermarkTemplateRequest{
-		WatermarkTemplateId: "4f7ccde1-32a3-486e-96a6-7cd1e28a89de",
+		WatermarkTemplateId: "db6a7898-e6c4-43d5-9b28-d44a6a1aad1b",
 		WatermarkTemplate: WatermarkTemplate{
 			TemplateId:    "WatermarkTemplate-0",
-			Name:          "watermark:" + time.Now().Format("2006-01-02-15-04-05"),
+			Name:          "watermark_" + "test-name-template_124",
 			Description:   "test",
 			Type:          "text",
 			ReferPosition: "topLeft",
-			MarginX:       "0",
-			MarginY:       "0",
+			MarginX:       "0.5",
+			MarginY:       "0.3",
 			TextTemplate: TextTemplate{
 				FontType:  "SourceHanSans",
-				Text:      "test:" + time.Now().Format("2006-01-02-15-04-05"),
+				Text:      "test:" + "test-name-template_124",
 				FontSize:  40,
 				FontColor: "#FF0000",
 			},
 		},
 	}
-	resp, err := client.UpdateWatermarkTemplate(req)
-	if err != nil {
-		t.Fatalf("%e", err)
-	} else {
-		t.Logf("got response meta: %+v", resp.ResponseMeta)
-		t.Logf("got response data: %+v", resp.ResponseData)
-	}
+	_, err := client.UpdateWatermarkTemplate(req)
+
+	assert.Contains(t, err.Error(), "400")
+	assert.Contains(t, err.Error(), "InvalidArgument")
+	assert.Contains(t, err.Error(), "Can't change type in watermarkTemplate")
 }
 
 func TestUpdateWatermarkTemplate3(t *testing.T) {
@@ -853,10 +924,10 @@ func TestUpdateWatermarkTemplate3(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 
 	req := UpdateWatermarkTemplateRequest{
-		WatermarkTemplateId: "6be4a35c-9790-4dfc-aa1e-4721d0ab906c",
+		WatermarkTemplateId: "db6a7898-e6c4-43d5-9b28-d44a6a1aad1b",
 		WatermarkTemplate: WatermarkTemplate{
 			TemplateId:    "WatermarkTemplate-0",
-			Name:          "watermark:" + time.Now().Format("2006-01-02-15-04-05"),
+			Name:          "watermark:" + "test-name-template_124",
 			Description:   "test",
 			Type:          "image",
 			ReferPosition: "topLeft",
@@ -943,8 +1014,8 @@ func TestListWatermarkTemplate2(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 
 	req := ListWatermarkTemplateRequest{
-		Offset: 1,
-		Limit:  2,
+		Offset: 0,
+		Limit:  50,
 	}
 	resp, err := client.ListWatermarkTemplate(req)
 	if err != nil {
@@ -995,9 +1066,8 @@ func TestCreateSnapshotTemplate1(t *testing.T) {
 	req := CreateSnapshotTemplateRequest{
 		TemplateType: "SampleSnapshot",
 		SampleSnapshotTemplate: SampleSnapshotTemplate{
-			//Name:     strings.ReplaceAll("name:"+time.Now().String(), " ", ""),
-			Name:     strings.ReplaceAll("name-SampleSnapshot", " ", ""),
-			Interval: 1,
+			Interval: 2,
+			Height:   50,
 		},
 	}
 	resp, err := client.CreateSnapshotTemplate(req)
@@ -1007,6 +1077,31 @@ func TestCreateSnapshotTemplate1(t *testing.T) {
 		t.Logf("got response meta: %+v", resp.ResponseMeta)
 		t.Logf("got response data: %+v", resp.ResponseData)
 	}
+}
+
+func TestCreateSnapshotTemplateNotSetWidthAndHeight(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := CreateSnapshotTemplateRequest{
+		TemplateType: "SampleSnapshot",
+		SampleSnapshotTemplate: SampleSnapshotTemplate{
+			Interval: 1,
+		},
+	}
+	_, err := client.CreateSnapshotTemplate(req)
+	assert.Contains(t, err.Error(), "400")
+	assert.Contains(t, err.Error(), "InvalidArgument")
+	assert.Contains(t, err.Error(), "Width and Height can not both be null or zero")
 }
 
 func TestCreateSnapshotTemplate2(t *testing.T) {
@@ -1025,9 +1120,35 @@ func TestCreateSnapshotTemplate2(t *testing.T) {
 	req := CreateSnapshotTemplateRequest{
 		TemplateType: "SnapshotByTimeOffset",
 		SnapshotByTimeOffsetTemplate: SnapshotByTimeOffsetTemplate{
-			//Name: "SnapshotByTimeOffsetTemplate:" + time.Now().String(),
+			//Name: "SnapshotByTimeOffsetTemplate:" + "only_test_1",
 			Name: strings.ReplaceAll("name-SnapshotByTimeOffset", " ", ""),
 		},
+	}
+	resp, err := client.CreateSnapshotTemplate(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v", resp.ResponseMeta)
+		t.Logf("got response data: %+v", resp.ResponseData)
+	}
+}
+
+func TestCreateSnapshotTemplateSnapshotByTimeOffsetTemplateOptional(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := CreateSnapshotTemplateRequest{
+		TemplateType:                 "SnapshotByTimeOffset",
+		SnapshotByTimeOffsetTemplate: SnapshotByTimeOffsetTemplate{},
 	}
 	resp, err := client.CreateSnapshotTemplate(req)
 	if err != nil {
@@ -1054,11 +1175,11 @@ func TestCreateSnapshotTemplate3(t *testing.T) {
 	req := CreateSnapshotTemplateRequest{
 		TemplateType: "ImageSprite",
 		ImageSpriteTemplate: ImageSpriteTemplate{
-			//Name:           "ImageSpriteTemplate:" + time.Now().String(),
-			Name:           strings.ReplaceAll("name-ImageSprite", " ", ""),
+			Name:           "ImageSpriteTemplate-" + "only_test_1",
 			SampleInterval: 1,
 			RowCount:       3,
 			ColumnCount:    5,
+			Width:          200,
 		},
 	}
 	resp, err := client.CreateSnapshotTemplate(req)
@@ -1068,6 +1189,34 @@ func TestCreateSnapshotTemplate3(t *testing.T) {
 		t.Logf("got response meta: %+v", resp.ResponseMeta)
 		t.Logf("got response data: %+v", resp.ResponseData)
 	}
+}
+
+func TestCreateSnapshotTemplateNotSetWidthHeight(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := CreateSnapshotTemplateRequest{
+		TemplateType: "ImageSprite",
+		ImageSpriteTemplate: ImageSpriteTemplate{
+			Name:           "ImageSpriteTemplate-" + "only_test_1",
+			SampleInterval: 1,
+			RowCount:       3,
+			ColumnCount:    5,
+		},
+	}
+	_, err := client.CreateSnapshotTemplate(req)
+	assert.Contains(t, err.Error(), "400")
+	assert.Contains(t, err.Error(), "InvalidArgument")
+	assert.Contains(t, err.Error(), "Width and Height can not both be null or zero")
 }
 
 func TestCreateSnapshotTemplate4(t *testing.T) {
@@ -1086,15 +1235,14 @@ func TestCreateSnapshotTemplate4(t *testing.T) {
 	req := CreateSnapshotTemplateRequest{
 		TemplateType: "SampleSnapshot",
 		SampleSnapshotTemplate: SampleSnapshotTemplate{
-			SnapshotTemplateId: "SnapshotTemplateId-0",
-			Name:               strings.ReplaceAll("name-SampleSnapshot", " ", ""),
-			Description:        time.Now().Format("2006-01-02-15-04-05"),
-			SampleType:         "Time",
-			Interval:           1,
-			Format:             "jpeg",
-			Width:              0,
-			Height:             720,
-			OffsetTime:         0,
+			Name:        "only_test_SampleSnapshot",
+			Description: "test-name-template_124",
+			SampleType:  "Time",
+			Interval:    2,
+			Format:      "png",
+			Width:       200,
+			Height:      400,
+			OffsetTime:  5,
 		},
 	}
 	resp, err := client.CreateSnapshotTemplate(req)
@@ -1122,13 +1270,12 @@ func TestCreateSnapshotTemplate5(t *testing.T) {
 	req := CreateSnapshotTemplateRequest{
 		TemplateType: "SnapshotByTimeOffset",
 		SnapshotByTimeOffsetTemplate: SnapshotByTimeOffsetTemplate{
-			SnapshotTemplateId: "SnapshotTemplateId-0",
-			Name:               strings.ReplaceAll("name-SnapshotByTimeOffset", " ", ""),
-			Description:        time.Now().Format("2006-01-02-15-04-05"),
-			Format:             "png",
-			Width:              0,
-			Height:             0,
-			OffsetTime:         0,
+			Name:        strings.ReplaceAll("name-SnapshotByTimeOffset", " ", ""),
+			Description: "test-name-template_124",
+			Format:      "png",
+			Width:       0,
+			Height:      0,
+			OffsetTime:  0,
 		},
 	}
 	resp, err := client.CreateSnapshotTemplate(req)
@@ -1158,13 +1305,13 @@ func TestCreateSnapshotTemplate6(t *testing.T) {
 		ImageSpriteTemplate: ImageSpriteTemplate{
 			SnapshotTemplateId: "SnapshotTemplateId-0",
 			Name:               strings.ReplaceAll("name-ImageSpriteTemplate", " ", ""),
-			Description:        time.Now().Format("2006-01-02-15-04-05"),
+			Description:        "test-name-template_124",
 			SampleType:         "Time",
 			SampleInterval:     1,
 			RowCount:           3,
 			ColumnCount:        5,
-			Width:              0,
-			Height:             480,
+			Width:              200,
+			Height:             420,
 			Format:             "png",
 		},
 	}
@@ -1192,10 +1339,9 @@ func TestUpdateSnapshotTemplate1(t *testing.T) {
 
 	req := UpdateSnapshotTemplateRequest{
 		TemplateType:       "SampleSnapshot",
-		SnapshotTemplateId: "f0ecfb68-5c94-4655-96b3-a045f67c7deb",
+		SnapshotTemplateId: "80d5cce2-8877-4662-9e50-f268baeaa21d",
 		SampleSnapshotTemplate: SampleSnapshotTemplate{
-			//Name: "SampleSnapshot:" + time.Now().String(),
-			Name: "SampleSnapshot-" + strconv.FormatInt(time.Now().UnixNano(), 10),
+			Name: "SampleSnapshot:" + "only_test_1",
 		},
 	}
 	resp, err := client.UpdateSnapshotTemplate(req)
@@ -1224,17 +1370,13 @@ func TestUpdateSnapshotTemplate2(t *testing.T) {
 		TemplateType:       "SnapshotByTimeOffset",
 		SnapshotTemplateId: "9387156c-2d0c-4818-8cbc-f61a5d62ffb9",
 		SnapshotByTimeOffsetTemplate: SnapshotByTimeOffsetTemplate{
-			//Name: "SnapshotByTimeOffsetTemplate:" + time.Now().String(),
-			Name: "SnapshotByTimeOffsetTemplate-" + strconv.FormatInt(time.Now().UnixNano(), 10),
+			Name: "SnapshotByTimeOffsetTemplate:" + "only_test_1",
 		},
 	}
-	resp, err := client.UpdateSnapshotTemplate(req)
-	if err != nil {
-		t.Fatalf("%e", err)
-	} else {
-		t.Logf("got response meta: %+v", resp.ResponseMeta)
-		t.Logf("got response data: %+v", resp.ResponseData)
-	}
+	_, err := client.UpdateSnapshotTemplate(req)
+	assert.Contains(t, err.Error(), "404")
+	assert.Contains(t, err.Error(), "ResourceNotFound")
+	assert.Contains(t, err.Error(), "Template is not found")
 }
 
 func TestUpdateSnapshotTemplate3(t *testing.T) {
@@ -1254,8 +1396,7 @@ func TestUpdateSnapshotTemplate3(t *testing.T) {
 		TemplateType:       "ImageSprite",
 		SnapshotTemplateId: "0a00576f-05ce-48d9-b453-3a5f1f72e235",
 		ImageSpriteTemplate: ImageSpriteTemplate{
-			//Name: "ImageSprite:" + time.Now().String(),
-			Name: "ImageSprite-" + strconv.FormatInt(time.Now().UnixNano(), 10),
+			Name: "ImageSprite:" + "only_test_1",
 		},
 	}
 	resp, err := client.UpdateSnapshotTemplate(req)
@@ -1282,11 +1423,11 @@ func TestUpdateSnapshotTemplate4(t *testing.T) {
 
 	req := UpdateSnapshotTemplateRequest{
 		TemplateType:       "SampleSnapshot",
-		SnapshotTemplateId: "54c3ebf9-f606-45b5-9566-ec923434123b",
+		SnapshotTemplateId: "f0ecfb68-5c94-4655-96b3-a045f67c7deb",
 		SampleSnapshotTemplate: SampleSnapshotTemplate{
 			SnapshotTemplateId: "SnapshotTemplateId-0",
 			Name:               strings.ReplaceAll("name-SampleSnapshot", " ", ""),
-			Description:        time.Now().Format("2006-01-02-15-04-05"),
+			Description:        "test-name-template_124",
 			SampleType:         "Time",
 			Interval:           1,
 			Format:             "jpeg",
@@ -1319,11 +1460,10 @@ func TestUpdateSnapshotTemplate5(t *testing.T) {
 
 	req := UpdateSnapshotTemplateRequest{
 		TemplateType:       "SnapshotByTimeOffset",
-		SnapshotTemplateId: "8dbae8af-957a-4335-8374-b7da2631f1fe",
+		SnapshotTemplateId: "9387156c-2d0c-4818-8cbc-f61a5d62ffb9",
 		SnapshotByTimeOffsetTemplate: SnapshotByTimeOffsetTemplate{
 			SnapshotTemplateId: "SnapshotTemplateId-0",
-			Name:               strings.ReplaceAll("name-SnapshotByTimeOffset", " ", ""),
-			Description:        time.Now().Format("2006-01-02-15-04-05"),
+			Description:        "test-name-template_124",
 			Format:             "png",
 			Width:              0,
 			Height:             0,
@@ -1354,11 +1494,11 @@ func TestUpdateSnapshotTemplate6(t *testing.T) {
 
 	req := UpdateSnapshotTemplateRequest{
 		TemplateType:       "ImageSprite",
-		SnapshotTemplateId: "419d3c7b-f065-478e-9ded-1815ae89dbf5",
+		SnapshotTemplateId: "0a00576f-05ce-48d9-b453-3a5f1f72e235",
 		ImageSpriteTemplate: ImageSpriteTemplate{
 			SnapshotTemplateId: "SnapshotTemplateId-0",
 			Name:               strings.ReplaceAll("name-ImageSpriteTemplate", " ", ""),
-			Description:        time.Now().Format("2006-01-02-15-04-05"),
+			Description:        "test-name-template_124",
 			SampleType:         "Time",
 			SampleInterval:     1,
 			RowCount:           3,
@@ -1392,7 +1532,7 @@ func TestDescribeSnapshotTemplate1(t *testing.T) {
 
 	req := DescribeSnapshotTemplateRequest{
 		TemplateType:       "SampleSnapshot",
-		SnapshotTemplateId: "f0ecfb68-5c94-4655-96b3-a045f67c7deb",
+		SnapshotTemplateId: "80d5cce2-8877-4662-9e50-f268baeaa21d",
 	}
 	resp, err := client.DescribeSnapshotTemplate(req)
 	if err != nil {
@@ -1427,6 +1567,29 @@ func TestDescribeSnapshotTemplate2(t *testing.T) {
 		t.Logf("got response meta: %+v", resp.ResponseMeta)
 		t.Logf("got response data: %+v", resp.ResponseData)
 	}
+}
+
+func TestDescribeSnapshotTemplateAnotherAK(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := DescribeSnapshotTemplateRequest{
+		TemplateType:       "SnapshotByTimeOffset",
+		SnapshotTemplateId: "b599e91c-1b76-4837-a06e-d400d3f9f428",
+	}
+	_, err := client.DescribeSnapshotTemplate(req)
+	assert.Contains(t, err.Error(), "404")
+	assert.Contains(t, err.Error(), "ResourceNotFound")
+	assert.Contains(t, err.Error(), "Template is not found")
 }
 
 func TestDescribeSnapshotTemplate3(t *testing.T) {
@@ -1545,8 +1708,8 @@ func TestListSnapshotTemplate4(t *testing.T) {
 
 	req := ListSnapshotTemplateRequest{
 		TemplateType: "ImageSprite",
-		Offset:       1,
-		Limit:        2,
+		Offset:       0,
+		Limit:        30,
 	}
 	resp, err := client.ListSnapshotTemplate(req)
 	if err != nil {
@@ -1600,13 +1763,10 @@ func TestDeleteSnapshotTemplate2(t *testing.T) {
 		TemplateType:       "SnapshotByTimeOffset",
 		SnapshotTemplateId: "9387156c-2d0c-4818-8cbc-f61a5d62ffb9",
 	}
-	resp, err := client.DeleteSnapshotTemplate(req)
-	if err != nil {
-		t.Fatalf("%e", err)
-	} else {
-		t.Logf("got response meta: %+v", resp.ResponseMeta)
-		t.Logf("got response data: %+v", resp.ResponseData)
-	}
+	_, err := client.DeleteSnapshotTemplate(req)
+	assert.Contains(t, err.Error(), "404")
+	assert.Contains(t, err.Error(), "ResourceNotFound")
+	assert.Contains(t, err.Error(), "Template is not found")
 }
 
 func TestDeleteSnapshotTemplate3(t *testing.T) {
@@ -1650,8 +1810,8 @@ func TestCreateWorkflowTemplate(t *testing.T) {
 
 	req := CreateWorkflowTemplateRequest{
 		MediaProcessWorkflowTemplate: MediaProcessWorkflowTemplate{
-			WorkflowName: "WorkflowName-" + time.Now().Format("xxxx-xx-xx-xx-xx-xx"),
-			Description:  time.Now().Format("2006-01-02-15-04-05"),
+			WorkflowName: "WorkflowName_" + "only_test_1",
+			Description:  "test-name-template_124",
 			TranscodeTasks: []TranscodeTask{{
 				TemplateId: "e67524fc-fba3-45b7-a040-da6a92ccb787",
 			}},
@@ -1675,6 +1835,62 @@ func TestCreateWorkflowTemplate(t *testing.T) {
 	}
 }
 
+func TestCreateWorkflowTemplateOnlySnapshot(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := CreateWorkflowTemplateRequest{
+		MediaProcessWorkflowTemplate: MediaProcessWorkflowTemplate{
+			WorkflowName: "WorkflowName_" + "only_test_3",
+			Description:  "test-name-template_124",
+			SampleSnapshotTasks: []SampleSnapshotTask{{
+				TemplateId: "8a511fdd-eb6b-4c34-8d2d-dc5ce4cbdc06",
+			}},
+		},
+	}
+	resp, err := client.CreateWorkflowTemplate(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v", resp.ResponseMeta)
+		t.Logf("got response data: %+v", resp.ResponseData)
+	}
+}
+
+func TestCreateWorkflowTemplateOnlyError(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := CreateWorkflowTemplateRequest{
+		MediaProcessWorkflowTemplate: MediaProcessWorkflowTemplate{
+			WorkflowName: "WorkflowName_" + "only_test_3",
+			Description:  "test-name-template_124",
+		},
+	}
+	_, err := client.CreateWorkflowTemplate(req)
+	assert.Contains(t, err.Error(), "400")
+	assert.Contains(t, err.Error(), "InvalidArgument")
+	assert.Contains(t, err.Error(), "MediaProcessTemplates are all empty")
+}
+
 func TestUpdateWorkflowTemplate(t *testing.T) {
 	serviceInfo := base.ServiceInfo{
 		Region: "cn-beijing",
@@ -1689,10 +1905,10 @@ func TestUpdateWorkflowTemplate(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 
 	req := UpdateWorkflowTemplateRequest{
-		WorkflowId: "f8a0f341-5b92-478a-b405-ac1210bbe0df",
+		WorkflowId: "3feeae66-de25-4b8c-8686-0064092a331d",
 		MediaProcessWorkflowTemplate: MediaProcessWorkflowTemplate{
-			WorkflowName: "WorkflowName-" + time.Now().Format("xxxx-xx-xx-xx-xx-xx"),
-			Description:  time.Now().Format("2006-01-02-15-04-05"),
+			WorkflowName: "WorkflowName_" + "only_test_1",
+			Description:  "test-name-template_124",
 			TranscodeTasks: []TranscodeTask{{
 				TemplateId: "e67524fc-fba3-45b7-a040-da6a92ccb787",
 			}},
@@ -1707,13 +1923,48 @@ func TestUpdateWorkflowTemplate(t *testing.T) {
 			}},
 		},
 	}
-	resp, err := client.UpdateWorkflowTemplate(req)
-	if err != nil {
-		t.Fatalf("%e", err)
-	} else {
-		t.Logf("got response meta: %+v", resp.ResponseMeta)
-		t.Logf("got response data: %+v", resp.ResponseData)
+	_, err := client.UpdateWorkflowTemplate(req)
+	assert.Contains(t, err.Error(), "404")
+	assert.Contains(t, err.Error(), "ResourceNotFound")
+	assert.Contains(t, err.Error(), "WorkflowTemplate does not exist")
+}
+
+func TestUpdateWorkflowTemplateNormal(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
 	}
+	client := NewVodClientV2(nil, serviceInfo)
+
+	req := UpdateWorkflowTemplateRequest{
+		WorkflowId: "8a511fdd-eb6b-4c34-8d2d-dc5ce4cbdc06",
+		MediaProcessWorkflowTemplate: MediaProcessWorkflowTemplate{
+			WorkflowName: "WorkflowName_" + "only_test_1",
+			Description:  "test-name-template_124",
+			TranscodeTasks: []TranscodeTask{{
+				TemplateId: "e67524fc-fba3-45b7-a040-da6a92ccb787",
+			}},
+			SampleSnapshotTasks: []SampleSnapshotTask{{
+				TemplateId: "8a511fdd-eb6b-4c34-8d2d-dc5ce4cbdc06",
+			}},
+			SnapshotByTimeOffsetTasks: []SnapshotByTimeOffsetTask{{
+				TemplateId: "5d6029d6-ed55-4eec-8704-b7153a635fae",
+			}},
+			ImageSpriteTasks: []ImageSpriteTask{{
+				TemplateId: "b2f8ccfc-2fb1-4b7f-90f0-9c21255a5345",
+			}},
+		},
+	}
+	_, err := client.UpdateWorkflowTemplate(req)
+	assert.Contains(t, err.Error(), "404")
+	assert.Contains(t, err.Error(), "ResourceNotFound")
+	assert.Contains(t, err.Error(), "WorkflowTemplate does not exist")
 }
 
 func TestListWorkflowTemplate1(t *testing.T) {
@@ -1754,8 +2005,8 @@ func TestListWorkflowTemplate2(t *testing.T) {
 
 	req := ListWorkflowTemplateRequest{
 		Names:  []string{""},
-		Offset: 0,
-		Limit:  2,
+		Offset: 1,
+		Limit:  30,
 	}
 	resp, err := client.ListWorkflowTemplate(req)
 	if err != nil {
@@ -1830,7 +2081,7 @@ func TestDescribeTaskDetail(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 
 	req := DescribeTaskDetailRequest{
-		TaskId: "332c2cd11877067eaa99ded2648e078d",
+		TaskId: "7abaa3c3775da7cbaa99ded2648e078d",
 	}
 	resp, err := client.DescribeTaskDetail(req)
 	if err != nil {
