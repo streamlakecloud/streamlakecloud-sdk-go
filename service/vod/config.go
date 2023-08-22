@@ -98,6 +98,13 @@ var ApiList = map[string]*base.ApiInfo{
 	/*************
 	 * 媒资管理
 	 *************/
+	"ListMediaInfo": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"ListMediaInfo"},
+		},
+	},
 	"DescribeMediaInfo": {
 		Method: http.MethodPost,
 		Path:   "/",

@@ -199,6 +199,35 @@ type DescribeMediaInfoRequest struct {
 	Filters    []string `json:",omitempty"`
 }
 
+type ListMediaInfoRequest struct {
+	MediaIds        []string `json:",omitempty"`
+	CreateTimeBegin int64    `json:",omitempty"`
+	CreateTimeEnd   int64    `json:",omitempty"`
+	Page            int32    `json:",omitempty"`
+	Size            int32    `json:",omitempty"`
+}
+
+type ListMediaInfoResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		MediaInfoList []MediaInfo
+		Total         int32 `json:",omitempty"`
+		Page          int32 `json:",omitempty"`
+		Size          int32 `json:",omitempty"`
+	} `json:",omitempty"`
+}
+
+type MediaInfo struct {
+	MediaId    string
+	Status     string
+	Width      int32
+	Height     int32
+	Duration   float64
+	CreateTime int64
+	CoverUrl   string
+	Format     string
+}
+
 type AudioStream struct {
 	Duration   float64
 	Bitrate    int32

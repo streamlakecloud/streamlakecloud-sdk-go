@@ -90,6 +90,28 @@ func TestFetchStore(t *testing.T) {
 	}
 }
 
+// 获取媒资信息列表样例
+func TestDescribeListMediaInfo(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: "ACCESS_KEY_TEST", SecretAccessKey: "SECRET_KEY_TEST"},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+	req := ListMediaInfoRequest{}
+	resp, err := client.ListMediaInfo(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+}
+
 // 获取媒资信息样例
 func TestDescribeMediaInfo(t *testing.T) {
 	serviceInfo := base.ServiceInfo{

@@ -101,6 +101,15 @@ func (v *VodClient) DescribeMediaProcessJobs(req DescribeMediaProcessJobsRequest
 	return resp, nil
 }
 
+func (v *VodClient) ListMediaInfo(req ListMediaInfoRequest) (*ListMediaInfoResponse, error) {
+	resp := &ListMediaInfoResponse{}
+	err := v.PostForAPIWithRequestResponse("ListMediaInfo", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (v *VodClient) DescribeMediaInfo(req DescribeMediaInfoRequest) (*DescribeMediaInfoResponse, error) {
 	resp := &DescribeMediaInfoResponse{}
 	err := v.PostForAPIWithRequestResponse("DescribeMediaInfo", req, resp)
