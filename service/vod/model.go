@@ -239,7 +239,7 @@ type VideoStream struct {
 	Duration float64
 	Width    int32
 	Height   int32
-	Fps      float32
+	Fps      int32
 	Bitrate  int32
 	Rotate   string // one of {"0", "90", "180", "270"}
 	Codec    string
@@ -975,47 +975,87 @@ type MediaProcessTaskResult struct {
 }
 
 type TranscodeTaskResult struct {
-	Status           string             `json:",omitempty"`
-	Input            TranscodeTaskInput `json:",omitempty"`
-	BeginProcessTime string             `json:",omitempty"`
-	FinishTime       string             `json:",omitempty"`
+	Status           string              `json:",omitempty"`
+	Input            TranscodeTaskInput  `json:",omitempty"`
+	Output           TranscodeTaskOutput `json:",omitempty"`
+	BeginProcessTime string              `json:",omitempty"`
+	FinishTime       string              `json:",omitempty"`
 }
 
 type SnapshotByTimeOffsetTaskResult struct {
-	Status           string                        `json:",omitempty"`
-	Input            SnapshotByTimeOffsetTaskInput `json:",omitempty"`
-	BeginProcessTime string                        `json:",omitempty"`
-	FinishTime       string                        `json:",omitempty"`
+	Status           string                         `json:",omitempty"`
+	Input            SnapshotByTimeOffsetTaskInput  `json:",omitempty"`
+	Output           SnapshotByTimeOffsetTaskOutput `json:",omitempty"`
+	BeginProcessTime string                         `json:",omitempty"`
+	FinishTime       string                         `json:",omitempty"`
 }
 
 type SampleSnapshotTaskResult struct {
-	Status           string                  `json:",omitempty"`
-	Input            SampleSnapshotTaskInput `json:",omitempty"`
-	BeginProcessTime string                  `json:",omitempty"`
-	FinishTime       string                  `json:",omitempty"`
+	Status           string                   `json:",omitempty"`
+	Input            SampleSnapshotTaskInput  `json:",omitempty"`
+	Output           SampleSnapshotTaskOutput `json:",omitempty"`
+	BeginProcessTime string                   `json:",omitempty"`
+	FinishTime       string                   `json:",omitempty"`
 }
 
 type ImageSpriteTaskResult struct {
-	Status           string               `json:",omitempty"`
-	Input            ImageSpriteTaskInput `json:",omitempty"`
-	BeginProcessTime string               `json:",omitempty"`
-	FinishTime       string               `json:",omitempty"`
+	Status           string                `json:",omitempty"`
+	Output           ImageSpriteTaskOutput `json:",omitempty"`
+	Input            ImageSpriteTaskInput  `json:",omitempty"`
+	BeginProcessTime string                `json:",omitempty"`
+	FinishTime       string                `json:",omitempty"`
 }
 
 type TranscodeTaskInput struct {
 	TemplateId string `json:",omitempty"`
 }
 
+type TranscodeTaskOutput struct {
+	URLPath      string        `json:",omitempty"`
+	FileSize     int64         `json:",omitempty"`
+	Height       int32         `json:",omitempty"`
+	Width        int32         `json:",omitempty"`
+	Bitrate      int32         `json:":,omitempty"`
+	Duration     float32       `json:",omitempty"`
+	Fps          int32         `json:",omitempty"`
+	Format       string        `json:",omitempty"`
+	VideoStreams []VideoStream `json:",omitempty"`
+	AudioStreams []AudioStream `json:",omitempty"`
+}
+
 type SnapshotByTimeOffsetTaskInput struct {
 	TemplateId string `json:",omitempty"`
+}
+
+type SnapshotByTimeOffsetTaskOutput struct {
+	URLPath  string `json:",omitempty"`
+	FileSize int64  `json:",omitempty"`
+	Height   int32  `json:",omitempty"`
+	Width    int32  `json:",omitempty"`
+	Format   string `json:",omitempty"`
 }
 
 type SampleSnapshotTaskInput struct {
 	TemplateId string `json:",omitempty"`
 }
 
+type SampleSnapshotTaskOutput struct {
+	SampleSnapshotInfos []SampleSnapshotTaskInfo `json:",omitempty"`
+}
+
+type SampleSnapshotTaskInfo struct {
+	URLPath   string  `json:",omitempty"`
+	TimeStamp float64 `json:",omitempty"`
+	Width     int32   `json:",omitempty"`
+	Height    int32   `json:",omitempty"`
+}
+
 type ImageSpriteTaskInput struct {
 	TemplateId string `json:",omitempty"`
+}
+
+type ImageSpriteTaskOutput struct {
+	URLPath string `json:",omitempty"`
 }
 
 type ApplyUploadInfoRequest struct {
