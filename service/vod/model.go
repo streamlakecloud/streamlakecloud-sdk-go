@@ -239,11 +239,22 @@ type VideoStream struct {
 	Duration float64
 	Width    int32
 	Height   int32
+	Fps      float32
+	Bitrate  int32
+	Rotate   string // one of {"0", "90", "180", "270"}
+	Codec    string
+}
+
+type VideoStreamOutput struct {
+	Duration float64
+	Width    int32
+	Height   int32
 	Fps      int32
 	Bitrate  int32
 	Rotate   string // one of {"0", "90", "180", "270"}
 	Codec    string
 }
+
 type BasicInfo struct {
 	SubAppId    string
 	MediaId     string
@@ -954,16 +965,16 @@ type WorkflowTaskResult struct {
 }
 
 type Metadata struct {
-	FileSize        int64         `json:",omitempty"`
-	Height          int32         `json:",omitempty"`
-	Width           int32         `json:",omitempty"`
-	Bitrate         int32         `json:",omitempty"`
-	Duration        float64       `json:",omitempty"`
-	Fps             int32         `json:",omitempty"`
-	Format          string        `json:",omitempty"`
-	VideoMaxBitrate int64         `json:",omitempty"`
-	VideoStreams    []VideoStream `json:",omitempty"`
-	AudioStreams    []AudioStream `json:",omitempty"`
+	FileSize        int64               `json:",omitempty"`
+	Height          int32               `json:",omitempty"`
+	Width           int32               `json:",omitempty"`
+	Bitrate         int32               `json:",omitempty"`
+	Duration        float64             `json:",omitempty"`
+	Fps             int32               `json:",omitempty"`
+	Format          string              `json:",omitempty"`
+	VideoMaxBitrate int64               `json:",omitempty"`
+	VideoStreams    []VideoStreamOutput `json:",omitempty"`
+	AudioStreams    []AudioStream       `json:",omitempty"`
 }
 
 type MediaProcessTaskResult struct {
@@ -1011,16 +1022,16 @@ type TranscodeTaskInput struct {
 }
 
 type TranscodeTaskOutput struct {
-	URLPath      string        `json:",omitempty"`
-	FileSize     int64         `json:",omitempty"`
-	Height       int32         `json:",omitempty"`
-	Width        int32         `json:",omitempty"`
-	Bitrate      int32         `json:":,omitempty"`
-	Duration     float32       `json:",omitempty"`
-	Fps          int32         `json:",omitempty"`
-	Format       string        `json:",omitempty"`
-	VideoStreams []VideoStream `json:",omitempty"`
-	AudioStreams []AudioStream `json:",omitempty"`
+	URLPath      string              `json:",omitempty"`
+	FileSize     int64               `json:",omitempty"`
+	Height       int32               `json:",omitempty"`
+	Width        int32               `json:",omitempty"`
+	Bitrate      int32               `json:":,omitempty"`
+	Duration     float32             `json:",omitempty"`
+	Fps          int32               `json:",omitempty"`
+	Format       string              `json:",omitempty"`
+	VideoStreams []VideoStreamOutput `json:",omitempty"`
+	AudioStreams []AudioStream       `json:",omitempty"`
 }
 
 type SnapshotByTimeOffsetTaskInput struct {
