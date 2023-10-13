@@ -2103,7 +2103,7 @@ func TestDescribeTaskDetail(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 
 	req := DescribeTaskDetailRequest{
-		TaskId: "7abaa3c3775da7cbaa99ded2648e078d",
+		TaskId: "267b78bc33b21b7bb7787800519e2e78",
 	}
 	resp, err := client.DescribeTaskDetail(req)
 	if err != nil {
