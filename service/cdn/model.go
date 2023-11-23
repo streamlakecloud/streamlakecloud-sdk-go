@@ -151,6 +151,7 @@ type ListPcdnDataSourcesResult struct {
 		ISP           []PcdnDataSourcesData
 		OriginDomain  []string
 		ClientVersion []string
+		Domain        []string
 	} `json:",omitempty"`
 }
 
@@ -165,6 +166,7 @@ type PcdnDataSources struct {
 	ISP           []string
 	OriginDomain  []string
 	ClientVersion []string
+	Domain        []string
 }
 
 type DescribePcdnDataSummaryRequest struct {
