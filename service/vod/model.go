@@ -95,6 +95,7 @@ type SubmitWorkflowRequest struct {
 	WorkflowId     string
 	OverrideParams string `json:",omitempty"`
 	CallbackArgs   string `json:",omitempty"`
+	SpaceName      string `json:"SpaceName,omitempty"`
 }
 
 type SubmitWorkflowResponse struct {
@@ -183,6 +184,7 @@ type DescribeMediaProcessJobsResponse struct {
 type DeleteMediaRequest struct {
 	MediaId     string            `json:",omitempty"`
 	DeleteItems []MediaDeleteItem `json:",omitempty"`
+	SpaceName   string            `json:",omitempty"`
 }
 type MediaDeleteItem struct {
 	Type       string `json:",omitempty"`
@@ -197,6 +199,7 @@ type DescribeMediaInfoRequest struct {
 	MediaId    string   `json:",omitempty"` // 视频媒资 ID，与 PrimaryKey 二选一
 	PrimaryKey string   `json:",omitempty"` // 自定义媒资 ID，与 MediaId 二选一
 	Filters    []string `json:",omitempty"`
+	SpaceName  string   `json:",omitempty"`
 }
 
 type ListMediaInfoRequest struct {
@@ -205,6 +208,7 @@ type ListMediaInfoRequest struct {
 	CreateTimeEnd   int64    `json:",omitempty"`
 	Page            int32    `json:",omitempty"`
 	Size            int32    `json:",omitempty"`
+	SpaceName       string   `json:",omitempty"`
 }
 
 type ListMediaInfoResponse struct {
@@ -579,6 +583,7 @@ type DetectMediaResponse struct {
 
 type CreateTranscodeTemplateRequest struct {
 	TranscodeTemplate TranscodeTemplate
+	SpaceName         string `json:"SpaceName,omitempty"`
 }
 
 type TranscodeTemplate struct {
@@ -619,6 +624,7 @@ type CreateTranscodeTemplateResponse struct {
 type UpdateTranscodeTemplateRequest struct {
 	TranscodeTemplateId string            `json:",omitempty"`
 	TranscodeTemplate   TranscodeTemplate `json:",omitempty"`
+	SpaceName           string            `json:"SpaceName,omitempty"`
 }
 
 type UpdateTranscodeTemplateResponse struct {
@@ -630,6 +636,7 @@ type UpdateTranscodeTemplateResponse struct {
 
 type DescribeTranscodeTemplateRequest struct {
 	TranscodeTemplateId string `json:",omitempty"`
+	SpaceName           string `json:"SpaceName,omitempty"`
 }
 
 type DescribeTranscodeTemplateResponse struct {
@@ -642,8 +649,9 @@ type DescribeTranscodeTemplateResponse struct {
 }
 
 type ListTranscodeTemplateRequest struct {
-	Offset int32 `json:",omitempty"`
-	Limit  int32 `json:",omitempty"`
+	Offset    int32  `json:",omitempty"`
+	Limit     int32  `json:",omitempty"`
+	SpaceName string `json:"SpaceName,omitempty"`
 }
 
 type ListTranscodeTemplateResponse struct {
@@ -658,6 +666,7 @@ type ListTranscodeTemplateResponse struct {
 
 type DeleteTranscodeTemplateRequest struct {
 	TranscodeTemplateId string `json:",omitempty"`
+	SpaceName           string `json:"SpaceName,omitempty"`
 }
 
 type DeleteTranscodeTemplateResponse struct {
@@ -668,6 +677,7 @@ type DeleteTranscodeTemplateResponse struct {
 
 type CreateWatermarkTemplateRequest struct {
 	WatermarkTemplate WatermarkTemplate `json:",omitempty"`
+	SpaceName         string            `json:"SpaceName,omitempty"`
 }
 
 type WatermarkTemplate struct {
@@ -710,6 +720,7 @@ type CreateWatermarkTemplateResponse struct {
 type UpdateWatermarkTemplateRequest struct {
 	WatermarkTemplateId string            `json:",omitempty"`
 	WatermarkTemplate   WatermarkTemplate `json:",omitempty"`
+	SpaceName           string            `json:"SpaceName,omitempty"`
 }
 
 type UpdateWatermarkTemplateResponse struct {
@@ -721,6 +732,7 @@ type UpdateWatermarkTemplateResponse struct {
 
 type DescribeWatermarkTemplateRequest struct {
 	WatermarkTemplateId string `json:",omitempty"`
+	SpaceName           string `json:"SpaceName,omitempty"`
 }
 
 type DescribeWatermarkTemplateResponse struct {
@@ -733,8 +745,9 @@ type DescribeWatermarkTemplateResponse struct {
 }
 
 type ListWatermarkTemplateRequest struct {
-	Offset int32 `json:",omitempty"`
-	Limit  int32 `json:",omitempty"`
+	Offset    int32  `json:",omitempty"`
+	Limit     int32  `json:",omitempty"`
+	SpaceName string `json:"SpaceName,omitempty"`
 }
 
 type ListWatermarkTemplateResponse struct {
@@ -749,6 +762,7 @@ type ListWatermarkTemplateResponse struct {
 
 type DeleteWatermarkTemplateRequest struct {
 	WatermarkTemplateId string `json:",omitempty"`
+	SpaceName           string `json:"SpaceName,omitempty"`
 }
 
 type DeleteWatermarkTemplateResponse struct {
@@ -762,6 +776,7 @@ type CreateSnapshotTemplateRequest struct {
 	SnapshotByTimeOffsetTemplate SnapshotByTimeOffsetTemplate `json:",omitempty"`
 	SampleSnapshotTemplate       SampleSnapshotTemplate       `json:",omitempty"`
 	ImageSpriteTemplate          ImageSpriteTemplate          `json:",omitempty"`
+	SpaceName                    string                       `json:"SpaceName,omitempty"`
 }
 
 type SnapshotByTimeOffsetTemplate struct {
@@ -813,6 +828,7 @@ type UpdateSnapshotTemplateRequest struct {
 	SnapshotByTimeOffsetTemplate SnapshotByTimeOffsetTemplate `json:",omitempty"`
 	SampleSnapshotTemplate       SampleSnapshotTemplate       `json:",omitempty"`
 	ImageSpriteTemplate          ImageSpriteTemplate          `json:",omitempty"`
+	SpaceName                    string                       `json:"SpaceName,omitempty"`
 }
 
 type UpdateSnapshotTemplateResponse struct {
@@ -826,6 +842,7 @@ type UpdateSnapshotTemplateResponse struct {
 type DescribeSnapshotTemplateRequest struct {
 	TemplateType       string `json:",omitempty"`
 	SnapshotTemplateId string `json:",omitempty"`
+	SpaceName          string `json:"SpaceName,omitempty"`
 }
 
 type DescribeSnapshotTemplateResponse struct {
@@ -844,6 +861,7 @@ type ListSnapshotTemplateRequest struct {
 	TemplateType string `json:",omitempty"`
 	Offset       int32  `json:",omitempty"`
 	Limit        int32  `json:",omitempty"`
+	SpaceName    string `json:"SpaceName,omitempty"`
 }
 
 type ListSnapshotTemplateResponse struct {
@@ -858,6 +876,7 @@ type ListSnapshotTemplateResponse struct {
 type DeleteSnapshotTemplateRequest struct {
 	TemplateType       string `json:",omitempty"`
 	SnapshotTemplateId string `json:",omitempty"`
+	SpaceName          string `json:"SpaceName,omitempty"`
 }
 
 type DeleteSnapshotTemplateResponse struct {
@@ -868,6 +887,7 @@ type DeleteSnapshotTemplateResponse struct {
 
 type CreateWorkflowTemplateRequest struct {
 	MediaProcessWorkflowTemplate MediaProcessWorkflowTemplate `json:",omitempty"`
+	SpaceName                    string                       `json:"SpaceName,omitempty"`
 }
 
 type MediaProcessWorkflowTemplate struct {
@@ -906,6 +926,7 @@ type CreateWorkflowTemplateResponse struct {
 type UpdateWorkflowTemplateRequest struct {
 	WorkflowId                   string                       `json:",omitempty"`
 	MediaProcessWorkflowTemplate MediaProcessWorkflowTemplate `json:",omitempty"`
+	SpaceName                    string                       `json:"SpaceName,omitempty"`
 }
 
 type UpdateWorkflowTemplateResponse struct {
@@ -916,9 +937,10 @@ type UpdateWorkflowTemplateResponse struct {
 }
 
 type ListWorkflowTemplateRequest struct {
-	Names  []string `json:",omitempty"`
-	Offset int32    `json:",omitempty"`
-	Limit  int32    `json:",omitempty"`
+	Names     []string `json:",omitempty"`
+	Offset    int32    `json:",omitempty"`
+	Limit     int32    `json:",omitempty"`
+	SpaceName string   `json:"SpaceName,omitempty"`
 }
 
 type ListWorkflowTemplateResponse struct {
@@ -933,6 +955,7 @@ type ListWorkflowTemplateResponse struct {
 
 type DeleteWorkflowTemplateRequest struct {
 	WorkflowId string `json:",omitempty"`
+	SpaceName  string `json:"SpaceName,omitempty"`
 }
 
 type DeleteWorkflowTemplateResponse struct {
@@ -942,7 +965,8 @@ type DeleteWorkflowTemplateResponse struct {
 }
 
 type DescribeTaskDetailRequest struct {
-	TaskId string `json:",omitempty"`
+	TaskId    string `json:",omitempty"`
+	SpaceName string `json:"SpaceName,omitempty"`
 }
 
 type DescribeTaskDetailResponse struct {
@@ -1074,6 +1098,7 @@ type ApplyUploadInfoRequest struct {
 	MediaSort  string `json:",omitempty"`
 	FilePath   string `json:",omitempty"`
 	Format     string `json:",omitempty"`
+	SpaceName  string `json:",omitempty"`
 }
 
 type ApplyUploadInfoResponse struct {
