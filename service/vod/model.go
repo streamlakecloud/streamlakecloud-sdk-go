@@ -16,7 +16,8 @@ type FetchUploadURLSet struct {
 	PrimaryKey        string `json:",omitempty"`
 }
 type FetchUploadRequest struct {
-	URLSets []FetchUploadURLSet
+	URLSets   []FetchUploadURLSet
+	SpaceName string `json:"SpaceName,omitempty"`
 }
 
 type FetchUploadResponse struct {
@@ -136,6 +137,7 @@ type ProcessMediaRequest struct {
 	PrimaryKey    string
 	CallbackArgs  string
 	TranscodeSets []TranscodeSet
+	SpaceName     string `json:"SpaceName,omitempty"`
 }
 
 type ProcessMediaJobInfo struct {
@@ -402,6 +404,7 @@ type ProcessSet struct {
 type SubmitMediaProcessJobsRequest struct {
 	MediaId    string
 	ProcessSet ProcessSet
+	SpaceName  string `json:"SpaceName,omitempty"`
 }
 
 type SubmitMediaProcessJobsJobInfo struct {
