@@ -190,6 +190,10 @@ type PcdnDataSummaryResult struct {
 	ClientAvgDownloadSpeed         string
 	ClientFirstPackageTime         string
 	ClientFirstPackageCallbackTime string
+	CreateTaskFailRate             string
+	GetDataFailRate                string
+	CreateTaskFailCode             string
+	GetDataFailCode                string
 }
 
 type DescribePcdnDataSummaryResult struct {
@@ -210,8 +214,14 @@ type DescribePcdnDataDetailRequest struct {
 }
 
 type PcdnDataDetailDataItem struct {
-	TimeStamp string
-	Value     string
+	TimeStamp     string
+	Value         string
+	CodeValueList []CodeData
+}
+
+type CodeData struct {
+	Code  string
+	Count string
 }
 
 type DescribePcdnDataDetailResult struct {
