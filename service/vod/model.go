@@ -14,6 +14,7 @@ type FetchUploadURLSet struct {
 	CallbackArgs      string `json:",omitempty"`
 	WorkflowId        string `json:",omitempty"`
 	PrimaryKey        string `json:",omitempty"`
+	CallbackURL       string `json:"CallbackURL,omitempty"`
 }
 type FetchUploadRequest struct {
 	URLSets   []FetchUploadURLSet
