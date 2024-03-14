@@ -2,12 +2,19 @@ package vod
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/streamlakecloud/streamlakecloud-sdk-go/base"
 	"github.com/stretchr/testify/assert"
+	"log"
 	"net/http"
 	"os"
 	"strings"
 	"testing"
+	"time"
 )
 
 var (
@@ -43,6 +50,7 @@ func TestFetchUpload(t *testing.T) {
 			{
 				SourceURL:    "https://static.streamlake.com/kos/nlav11935/streamlake-website/static/home/main.mp4",
 				CallbackArgs: "test",
+				CallbackURL:  "www.streamlake.com",
 			},
 		},
 	}
@@ -2103,7 +2111,7 @@ func TestDescribeTaskDetail(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 
 	req := DescribeTaskDetailRequest{
-		TaskId: "267b78bc33b21b7bb7787800519e2e78",
+		TaskId: "d6f1f774128d04c0f6a2ef72f32932b4",
 	}
 	resp, err := client.DescribeTaskDetail(req)
 	if err != nil {
@@ -2164,4 +2172,32 @@ func TestCommitUploadInfo(t *testing.T) {
 	} else {
 		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
 	}
+}
+
+func TestGeneratePreSignedUrl(t *testing.T) {
+	Endpoint := "https://kms-cn-beijing.streamlakeapi.com"
+	AccessKey := ACCESS_KEY_TEST
+	SecretKey := SECRET_KEY_TEST
+	bucketName := "zhf-test-0509-02"
+	objectKey := "221.png"
+	expiration := 3600
+
+	sess, err := session.NewSession(&aws.Config{
+		Region:      aws.String("cn-beijing"),
+		Credentials: credentials.NewStaticCredentials(AccessKey, SecretKey, ""),
+		Endpoint:    aws.String(Endpoint),
+	})
+	if err != nil {
+		log.Printf("GetObject error: %v", err)
+		return
+	}
+	//使用
+	svc := s3.New(sess)
+	req, _ := svc.GetObjectRequest(&s3.GetObjectInput{
+		Bucket: aws.String(bucketName),
+		Key:    aws.String(objectKey),
+	})
+
+	presignedURL, _ := req.Presign(time.Duration(expiration) * time.Second)
+	fmt.Println(presignedURL)
 }
