@@ -1139,3 +1139,44 @@ type CommitUploadResponse struct {
 		MediaSort string `json:",omitempty"`
 	} `json:",omitempty"`
 }
+
+type ListDanmakuPreAuditRequest struct {
+	StartTime  int64  `json:"StartTime,omitempty"`
+	EndTime    int64  `json:"EndTime,omitempty"`
+	ResourceId string `json:"ResourceId,omitempty"`
+	PrimaryKey string `json:"PrimaryKey,omitempty"`
+	Limit      int32  `json:"Limit,omitempty"`
+}
+
+type ListDanmakuPreAuditResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		List  []DanmakuInfo `json:"List"`
+		Count int32         `json:"Count"`
+		Total int32         `json:"Total"`
+	}
+}
+
+type DanmakuInfo struct {
+	DanmakuId  int64  `json:"DanmakuId"`
+	ResourceId string `json:"ResourceId"`
+	UserId     string `json:"UserId"`
+	Body       string `json:"Body"`
+	Position   int64  `json:"Position"`
+	Color      string `json:"Color"`
+	Size       int32  `json:"Size"`
+}
+
+type UpdateDanmakuAuditResultRequest struct {
+	DanmakuId  int64   `json:"DanmakuId,omitempty"`
+	DanmakuIds []int64 `json:"DanmakuIds,omitempty"`
+	Status     string  `json:"Status,omitempty"`
+}
+
+type UpdateDanmakuAuditResultResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		DanmakuId  int64   `json:"DanmakuId"`
+		DanmakuIds []int64 `json:"DanmakuIds"`
+	}
+}

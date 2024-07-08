@@ -319,4 +319,21 @@ var ApiList = map[string]*base.ApiInfo{
 			"Action": []string{"DescribeTaskDetail"},
 		},
 	},
+	/*************
+	 * 弹幕审核
+	 *************/
+	"ListDanmakuPreAudit": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"ListDanmakuPreAudit"},
+		},
+	},
+	"UpdateDanamkuAuditResult": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"UpdateDanamkuAuditResult"},
+		},
+	},
 }

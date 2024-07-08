@@ -370,3 +370,21 @@ func (v *VodClient) CommitUpload(req CommitUploadRequest) (*CommitUploadResponse
 	}
 	return resp, nil
 }
+
+func (v *VodClient) listDanmakuPreAudit(req ListDanmakuPreAuditRequest) (*ListDanmakuPreAuditResponse, error) {
+	resp := &ListDanmakuPreAuditResponse{}
+	err := v.PostForAPIWithRequestResponse("ListDanmakuPreAudit", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) updateDanmakuPreAuditResult(req UpdateDanmakuAuditResultRequest) (*UpdateDanmakuAuditResultResponse, error) {
+	resp := &UpdateDanmakuAuditResultResponse{}
+	err := v.PostForAPIWithRequestResponse("UpdateDanamkuAuditResult", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
