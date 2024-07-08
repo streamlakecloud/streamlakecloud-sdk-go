@@ -2201,3 +2201,50 @@ func TestGeneratePreSignedUrl(t *testing.T) {
 	presignedURL, _ := req.Presign(time.Duration(expiration) * time.Second)
 	fmt.Println(presignedURL)
 }
+func TestUpdateDanamkuAuditResult(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+	request := UpdateDanmakuAuditResultRequest{
+		Status:    "Pass",
+		DanmakuId: 301903,
+		//DanmakuIds: []int64{301903},
+	}
+	resp, err := client.updateDanmakuPreAuditResult(request)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+}
+
+func TestListDanmakuPreAuditNeccesary(t *testing.T) {
+	serviceInfo := base.ServiceInfo{
+		Region: "cn-beijing",
+		Scheme: "https",
+		Host:   HOST_ENDPOINT,
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		ProductName: "vod",
+		Credentials: base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST},
+	}
+	client := NewVodClientV2(nil, serviceInfo)
+	request := ListDanmakuPreAuditRequest{}
+
+	resp, err := client.listDanmakuPreAudit(request)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+
+}
