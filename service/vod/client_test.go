@@ -2218,7 +2218,7 @@ func TestUpdateDanamkuAuditResult(t *testing.T) {
 		DanmakuId: 301903,
 		//DanmakuIds: []int64{301903},
 	}
-	resp, err := client.updateDanmakuPreAuditResult(request)
+	resp, err := client.UpdateDanmakuPreAuditResult(request)
 	if err != nil {
 		t.Fatalf("%e", err)
 	} else {
@@ -2240,7 +2240,7 @@ func TestListDanmakuPreAuditNeccesary(t *testing.T) {
 	client := NewVodClientV2(nil, serviceInfo)
 	request := ListDanmakuPreAuditRequest{}
 
-	resp, err := client.listDanmakuPreAudit(request)
+	resp, err := client.ListDanmakuPreAudit(request)
 	if err != nil {
 		t.Fatalf("%e", err)
 	} else {
