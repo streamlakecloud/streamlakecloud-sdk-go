@@ -65,3 +65,21 @@ type DescribeCdnUsageDataRequest struct {
 	AggregateType  string // 聚合类型，数据结果聚合处理，有效值：Normal：查询时间95峰值数据，Avg：查询时间段内日95峰值的均值数据，默认为Normal，备注：只有传Percentile参数时，AggregateType才会生效
 	SpaceName      string `json:"SpaceName,omitempty"` // 空间名称，不传按全部空间数据查询
 }
+
+type DescribeNCdnLogsRequest struct {
+	StartTime string // 获取数据起始时间点。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
+	EndTime   string // 获取数据结束时间点，需晚于起始时间，且和起始时间不大于七天。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
+}
+
+type DescribeNCdnLogsResult struct {
+	LogInfos map[string]string `json:",omitempty"` // 日志文件信息，对应key为对齐到五分钟的时间戳，value为日志文件名
+}
+
+type DescribeNCdnLogsResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *DescribeNCdnLogsResult `json:",omitempty"`
+}
+
+type DownloadNCdnLogRequest struct {
+	LogFileName string // 日志文件名
+}

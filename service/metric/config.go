@@ -42,4 +42,20 @@ var ApiList = map[string]*base.ApiInfo{
 			"Action": []string{"DescribeMpsUsageData"},
 		},
 	},
+
+	"DescribeNCdnLogs": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"DescribeNCdnLogs"},
+		},
+	},
+
+	"DownloadNCdnLog": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Query: url.Values{
+			"Action": []string{"DownloadNCdnLog"},
+		},
+	},
 }
