@@ -1,6 +1,10 @@
 package metric
 
-import "github.com/streamlakecloud/streamlakecloud-sdk-go/base"
+import (
+	"net/http"
+
+	"github.com/streamlakecloud/streamlakecloud-sdk-go/base"
+)
 
 type MetricClient struct {
 	*base.OpenAPI
@@ -58,6 +62,23 @@ func (v *MetricClient) DescribePcdnUsageData(req DescribePcdnUsageDataRequest) (
 	}
 	resp := &DescribePcdnUsageDataResponse{}
 	err := v.PostForAPIWithRequestResponse("DescribeDomainUsageData", cdnReq, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *MetricClient) DescribeNCdnLogs(req DescribeNCdnLogsRequest) (*DescribeNCdnLogsResponse, error) {
+	resp := &DescribeNCdnLogsResponse{}
+	err := v.PostForAPIWithRequestResponse("DescribeNCdnLogs", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *MetricClient) DownloadNCdnLog(req DownloadNCdnLogRequest) (*http.Response, error) {
+	resp, err := v.PostForAPIWithRequest("DownloadNCdnLog", req)
 	if err != nil {
 		return nil, err
 	}

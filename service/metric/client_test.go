@@ -1,6 +1,8 @@
 package metric
 
 import (
+	"bufio"
+	"compress/gzip"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -56,5 +58,52 @@ func TestRawOpenAPIVodClient(t *testing.T) {
 			t.Fatalf("%e", e)
 		}
 		t.Logf("%s", body)
+	}
+}
+func TestDescribeNCdnLogs(t *testing.T) {
+	client := NewMetricClient(nil)
+	client.ServiceInfo.Host = DEMO_HOST_STAGING
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY}
+	req := DescribeNCdnLogsRequest{
+		StartTime: "2024-11-21T16:00:00Z",
+		EndTime:   "2024-11-22T23:59:59Z",
+	}
+	resp, err := client.DescribeNCdnLogs(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response, logInfo: %s", resp.ResponseData.LogInfos)
+	}
+}
+
+func TestDownloadNCdnLog(t *testing.T) {
+	client := NewMetricClient(nil)
+	client.ServiceInfo.Host = DEMO_HOST_STAGING
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: DEMO_TEST_ACCESS_KEY}
+	req := DownloadNCdnLogRequest{
+		LogFileName: "202411221825.gz",
+	}
+	resp, err := client.DownloadNCdnLog(req)
+	if err != nil {
+		t.Fatalf("%e", err)
+	} else {
+		t.Logf("Downloaded Headers %v", resp.Header)
+		defer resp.Body.Close()
+
+		// read the response body, gunzip it
+		fz, err := gzip.NewReader(resp.Body)
+		if err != nil {
+			t.Fatalf("%e", err)
+		}
+		defer fz.Close()
+
+		// read first 10 lines
+		scanner := bufio.NewScanner(fz)
+		for i := 0; i < 10 && scanner.Scan(); i++ {
+			t.Logf("Line %d: %s", i+1, scanner.Text())
+		}
+		if err := scanner.Err(); err != nil {
+			t.Fatalf("%e", err)
+		}
 	}
 }
