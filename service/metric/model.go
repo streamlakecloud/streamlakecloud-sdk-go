@@ -67,8 +67,9 @@ type DescribeCdnUsageDataRequest struct {
 }
 
 type DescribeNCdnLogsRequest struct {
-	StartTime string // 获取数据起始时间点。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
-	EndTime   string // 获取数据结束时间点，需晚于起始时间，且和起始时间不大于七天。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
+	StartTime            string // 获取数据起始时间点。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
+	EndTime              string // 获取数据结束时间点，需晚于起始时间，且和起始时间不大于七天。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
+	EnableUseCdnDownload bool   // 是否使用 cdn url 下载，默认 false 不返回 url 下载链接，true 返回 url 链接
 }
 
 type DescribeNCdnLogsResult struct {
