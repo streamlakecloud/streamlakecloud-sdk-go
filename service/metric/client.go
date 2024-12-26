@@ -77,6 +77,7 @@ func (v *MetricClient) DescribeNCdnLogs(req DescribeNCdnLogsRequest) (*DescribeN
 	return resp, nil
 }
 
+// DownloadNCdnLog 不建议使用，下载日志文件结构，建议直接通过查询日志文件接口获取的 url 直接操作下载
 func (v *MetricClient) DownloadNCdnLog(req DownloadNCdnLogRequest) (*http.Response, error) {
 	resp, err := v.PostForAPIWithRequest("DownloadNCdnLog", req)
 	if err != nil {

@@ -72,8 +72,8 @@ type DescribeNCdnLogsRequest struct {
 }
 
 type DescribeNCdnLogsResult struct {
-	LogInfos    map[string]string `json:",omitempty"` // 日志文件信息，对应key为对齐到五分钟的时间戳，value为日志文件名
-	LogUrlInfos map[string]string `json:",omitempty"` // 日志文件 url 信息，对应key为对齐到五分钟的时间戳，value为日志文件下载 url 地址
+	LogInfos    map[string]string `json:",omitempty"` // 不建议使用，日志文件信息，对应key为对齐到五分钟的时间戳，value为日志文件名
+	LogUrlInfos map[string]string `json:",omitempty"` // 建议使用，日志文件 url 信息，对应key为对齐到五分钟的时间戳，value为日志文件下载 url 地址
 }
 
 type DescribeNCdnLogsResponse struct {
