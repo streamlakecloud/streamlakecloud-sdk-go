@@ -67,13 +67,13 @@ type DescribeCdnUsageDataRequest struct {
 }
 
 type DescribeNCdnLogsRequest struct {
-	StartTime            string // 获取数据起始时间点。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
-	EndTime              string // 获取数据结束时间点，需晚于起始时间，且和起始时间不大于七天。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
-	EnableUseCdnDownload bool   // 是否使用 cdn url 下载，默认 false 不返回 url 下载链接，true 返回 url 链接
+	StartTime string // 获取数据起始时间点。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
+	EndTime   string // 获取数据结束时间点，需晚于起始时间，且和起始时间不大于七天。格式为：yyyy-MM-ddTHH:mm:ssZ（UTC时间）。
 }
 
 type DescribeNCdnLogsResult struct {
-	LogInfos map[string]string `json:",omitempty"` // 日志文件信息，对应key为对齐到五分钟的时间戳，value为日志文件名
+	LogInfos    map[string]string `json:",omitempty"` // 日志文件信息，对应key为对齐到五分钟的时间戳，value为日志文件名
+	LogUrlInfos map[string]string `json:",omitempty"` // 日志文件 url 信息，对应key为对齐到五分钟的时间戳，value为日志文件下载 url 地址
 }
 
 type DescribeNCdnLogsResponse struct {
