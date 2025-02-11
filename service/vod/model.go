@@ -153,15 +153,22 @@ type ProcessMediaResponse struct {
 	} `json:",omitempty"`
 }
 
+// deprecated, do not use
 type DescribeMediaProcessJobsRequest struct {
 	JobIds string
+}
+
+type DescribeMediaProcessJobRequest struct {
+	JobId       string
+	ProcessType string `json:"ProcessType,omitempty"` // "MediaFeatureAnalysis"
+	SpaceName   string `json:"SpaceName,omitempty"`
 }
 
 type TranscodeJobInfo struct {
 	MediaId string
 	TranscodeInfo
 }
-type MediaProcessJobInfo struct {
+type CustomMediaProcessJobInfo struct {
 	JobId            string
 	JobType          string
 	CreateTime       string
@@ -172,11 +179,209 @@ type MediaProcessJobInfo struct {
 	Progress         int32            // value of percentage, 0~100
 	TranscodeJobInfo TranscodeJobInfo // only meaningful when SUCCESS
 }
+
+// deprecated, do not use
 type DescribeMediaProcessJobsResponse struct {
 	ResponseMeta *base.ResponseMeta
 	ResponseData *struct {
-		JobInfos       []MediaProcessJobInfo
+		JobInfos       []CustomMediaProcessJobInfo
 		NonExistJobIds []string
+	} `json:",omitempty"`
+}
+
+type MediaProcessVideoStreamInfo struct {
+	CodeType     string  // "video" 文件类型
+	CodecName    string  // "hevc" 编码器名称
+	Width        int     // 1080
+	Height       int     // 1920
+	AvgFrameRate string  // "24135680/804527" 平均帧率
+	RFrameRate   string  // "30/1" 帧率
+	Bitrate      int     // 12800 码率
+	StartTime    float32 // 0 开始时间
+	PixFmt       string  // "yuv420p" PixelFormat 像素格式
+	HdrType      string  // "SDR" hdr类型
+	Duration     float32 // 314.268359 时长 单位:秒
+}
+
+type MediaProcessAudioStreamInfo struct {
+	CodeType   string  // "audio" 文件类型
+	StartTime  float32 // 0 开始时间
+	Duration   float32 // 314.268359 时长 单位:秒
+	CodecName  string  // "aac" 编码器名称
+	Channels   int     // 2 声道数
+	SampleRate int     // 48000 采样率
+	Bitrate    int     // 12800 码率
+}
+
+type MediaProcessFormat struct {
+	FormatName string  // "MP4" 格式名称
+	ListSize   int     // m3u8文件的大小，单位: byte
+	Size       int     // 文件大小，单位: byte
+	Duration   float32 // 总时长，单位秒
+	Bitrate    int     // 869880 总码率，单位: bps
+}
+
+type MediaProcessMediaInfo struct {
+	UrlPath      string
+	VideoStreams []MediaProcessVideoStreamInfo
+	AudioStreams []MediaProcessAudioStreamInfo
+	Format       MediaProcessFormat
+	ErrorCode    string
+	ErrorMessage string
+}
+
+type QualityFeature struct {
+	NrQualityAvgScore     float32   // 无参考质量评价分数，取值区间：[1-5]
+	BlurProbability       float32   // 模糊概率，取值区间：[0-1]
+	BlockyProbability     float32   // 块效应程度，取值区间：[0-1]
+	NoiseProbability      float32   // 噪声程度，取值区间：[0-1]
+	InterlaceRatio        float32   // 交错视频概率，取值区间：[0-1]
+	DirtylensProbability  float32   // 镜头脏污程度，取值区间：[0-1]
+	BlurProbabilityNew    float32   // 新版本模型的模糊概率，越高表示越模糊，取值区间：[0-1]
+	BlockyProbabilityNew  float32   // 新版本模型的有块效应的概率，越高表示块效应程度越大，取值区间：[0-1]
+	LowLightPercentage    float32   // 暗光的概率，越高表示越可能是暗光情况，取值区间：[0-1]。视频专属的特征值。
+	CorruptionProbability float32   // 花屏的概率，越高表示越可能是花屏，取值区间：[0-1]
+	NoiseProbabilityNew   float32   // 新版本模型的噪声概率，越高表示越可能有噪声，取值区间：[0-1]
+	InterlaceScaleClass   float32   // interlace比例，取值区间：[0-1]
+	NrQualityScoreNN      []float32 // 无参考质量评价分数，取值区间：[1-5]
+}
+
+type AestheticsFeature struct {
+	DefocusProbability      float32 // 大光圈概率，取值区间：[0-1]
+	Colorfulness            float32 // 色彩丰富度，取值区间：[0-1]
+	UnderexposedProbability float32 // 曝光不足程度，取值区间：[0-1]
+	OverexposedProbability  float32 // 曝光过度程度，取值区间：[0-1]
+	LowContrastProbability  float32 // 低对比度程度，取值区间：[0-1]
+	AestheticsScore         float32 // 美学评分，取值区间：[0-1]
+}
+
+type ContentFeature struct {
+	JunkVideoProbability float32   // 内容无意义，取值区间：[0-1]
+	LetterboxProbability float32   // 三段式视频，取值区间：[0-1]
+	OritationProbability float32   // 横屏视频概率，取值区间：[0-1]
+	R0Probability        float32   // 横屏的概率，取值区间：[0-1]
+	R90Probability       float32   // 旋转90度的概率，取值区间：[0-1]
+	R270Probability      float32   // 旋转270度的概率，取值区间：[0-1]
+	NormalProbability    float32   // 普通画面概率，取值区间：[0-1]
+	PureProbability      float32   // 纯色画面概率，取值区间：[0-1]
+	TextProbability      float32   // 文字画面概率，取值区间：[0-1]
+	CartoonProbability   float32   // 卡通画面概率，取值区间：[0-1]
+	QrcodeProbability    float32   // 二维码画面概率，取值区间：[0-1]
+	LetterboxTop         []float32 // 画面上边占比，取值区间：[0-1]
+	LetterboxBottom      []float32 // 画面下边占比，取值区间：[0-1]
+	FaceRatio            float32   // 视频中含有人脸的视频帧占比，取值区间：[0-1]
+	VrVideo              int       // 1表示为vr视频，0表示不是
+}
+
+type AudioFeature struct {
+	AudioQuality               float32 // 音频质量，取值区间：[0-1]
+	MusicProbability           float32 // 音频为音乐概率，取值区间：[0-1]
+	DialogProbability          float32 // 音频为对话概率，取值区间：[0-1]
+	BackgroundSoundProbability float32 // 音频为背景音概率，取值区间：[0-1]
+	MutePercentage             float32 // 无声占比，取值区间：[0-1]
+}
+
+type CodingFeature struct {
+	EntropyAvg         float32   // 帧内复杂度的均值，越大表示图像/视频帧复杂度越高，取值范围大致在-6到26。
+	EntropyVar         float32   // 帧内复杂度的方差，越大表示视频内复杂度变化范围越大，取值 : >0。
+	IntraComplexity    float32   // 帧内复杂度，取值范围：>0
+	InterComplexity    float32   // 帧间复杂度，取值范围：>0
+	TopIntraComplexity float32   // 多帧帧内复杂度TOP部分，取值范围：>0
+	TopInterComplexity float32   // 多帧帧间复杂度TOP部分，取值范围：>0
+	MaxIntraComplexity float32   // 多帧帧内复杂度最大值，取值范围：>0
+	MaxInterComplexity float32   // 多帧帧间复杂度最大值，取值范围：>0
+	MinIntraComplexity float32   // 多帧帧内复杂度最小值，取值范围：>0
+	MinInterComplexity float32   // 多帧帧间复杂度最小值，取值范围：>0
+	YMean              float32   // Y通道均值，取值范围：>0，视频专属的特征值。
+	YMeanMax           float32   // 多帧Y通道均值最大值，取值范围：>0，视频专属的特征值。
+	YMeanMin           float32   // 多帧Y通道均值最小值，取值范围：>=0，视频专属的特征值。
+	YDiffStd           float32   // Y通道差异标准差，取值范围：>0，视频专属的特征值。
+	YDiffStdMax        float32   // 多帧Y通道差异标准差最大值，取值范围：>0，视频专属的特征值。
+	YDiffStdMin        float32   // 多帧Y通道差异标准差最小值，取值范围：>=0，视频专属的特征值。
+	CapeMotionVertical float32   // 垂直运动量，取值范围：>0
+	CapeMotionHorizon  float32   // 水平运动量，取值范围：>0
+	Embedding          []float32 // 编码特征向量，无范围限制
+}
+
+type SceneFeature struct {
+	OthersProbability    float32 // 场景-其他类别概率，取值区间：[0-1]
+	SkyProbability       float32 // 场景-天空画面概率，取值区间：[0-1]
+	MountainProbability  float32 // 场景-高山画面概率，取值区间：[0-1]
+	FieldProbability     float32 // 场景-田野画面概率，取值区间：[0-1]
+	WoodProbability      float32 // 场景-森林画面概率，取值区间：[0-1]
+	WaterProbability     float32 // 场景-水画面概率，取值区间：[0-1]
+	CrowdProbability     float32 // 场景-人群画面概率，取值区间：[0-1]
+	PersonProbability    float32 // 场景-全身人像概率，取值区间：[0-1]
+	PortraitProbability  float32 // 场景-半身人像概率，取值区间：[0-1]
+	CarProbability       float32 // 场景-汽车概率，取值区间：[0-1]
+	WriteProbability     float32 // 场景-文本概率，取值区间：[0-1]
+	FoodProbability      float32 // 场景-美食画面概率，取值区间：[0-1]
+	CgProbability        float32 // 场景-cg画面概率，取值区间：[0-1]
+	NightProbability     float32 // 场景-夜景画面概率，取值区间：[0-1]
+	PurecolorProbability float32 // 场景-纯色图片概率，取值区间：[0-1]
+	CapProbability       float32 // 场景-字幕概率，取值区间：[0-1]
+	MobaProbability      float32 // 场景-王者荣耀概率，取值区间：[0-1]
+	FpsProbability       float32 // 场景-吃鸡游戏概率，取值区间：[0-1]
+	StageProbability     float32 // 场景-舞台类别概率，取值区间：[0-1]
+}
+
+type MediaProcessMediaFeature struct {
+	QualityFeature    QualityFeature    // 画质特征
+	AestheticsFeature AestheticsFeature // 美学特征
+	ContentFeature    ContentFeature    // 内容特征
+	AudioFeature      AudioFeature      // 音频特征
+	CodingFeature     CodingFeature     // 编码特征
+	SceneFeature      SceneFeature      // 场景特征
+	Version           string            // "premium"，特征版本
+}
+
+type MediaProcessJobInfo struct {
+	JobId        string
+	TemplateId   string
+	UrlPaths     string // comma separated
+	MediaInfos   []MediaProcessMediaInfo
+	MediaFeature MediaProcessMediaFeature
+	ErrorCode    string
+	ErrorMessage string
+}
+type DescribeMediaProcessJobResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		CreateTime  string // in format of YYYY-MM-DDThh:mm:ssZ
+		ProcessTime string // in format of YYYY-MM-DDThh:mm:ssZ
+		FinishTime  string // in format of YYYY-MM-DDThh:mm:ssZ
+		ProcessType string
+		Status      string // one of "pending", "processing", "completed", "error"
+		JobInfo     MediaProcessJobInfo
+	} `json:",omitempty"`
+}
+
+type ListMediaProcessJobRequest struct {
+	ProcessType string `json:",omitempty"`          // "MediaFeatureAnalysis"
+	Offset      int32  `json:",omitempty"`          // 分页偏移量，默认值：0。不能小于0
+	Limit       int32  `json:",omitempty"`          // 分页返回条数，最大不超过50。不能小于0，默认值：20
+	SpaceName   string `json:"SpaceName,omitempty"` // 应用空间，默认为：default_space
+}
+
+type ShortJobInfo struct {
+	JobId       string  // 任务 ID
+	KvqScore    float32 // KVQ总体得分
+	UrlPaths    string  // 转出文件的url或者目录，多个逗号(,)分割
+	ProcessType string
+	Version     string // "basic" or "premium"。KVQ任务版本
+	CreateTime  string // in format of YYYY-MM-DDThh:mm:ssZ
+	ProcessTime string // in format of YYYY-MM-DDThh:mm:ssZ
+	FinishTime  string // in format of YYYY-MM-DDThh:mm:ssZ
+	Status      string // 任务状态。可选值：pending：排队中、processing: 处理中、completed: 执行成功、error: 执行失败
+}
+
+type ListMediaProcessJobResponse struct {
+	ResponseMeta *base.ResponseMeta
+	ResponseData *struct {
+		ShortJobInfos []ShortJobInfo // 对应的简短任务结果列表
+		Limit         int32          // 返回的模板个数
+		Offset        int32          // 下次分页起始坐标
+		Total         int32          // 满足查询条件的模板总数
 	} `json:",omitempty"`
 }
 

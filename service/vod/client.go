@@ -92,9 +92,28 @@ func (v *VodClient) SubmitMediaProcessJobs(req SubmitMediaProcessJobsRequest) (*
 	return resp, nil
 }
 
+// deprecated, do not use
 func (v *VodClient) DescribeMediaProcessJobs(req DescribeMediaProcessJobsRequest) (*DescribeMediaProcessJobsResponse, error) {
 	resp := &DescribeMediaProcessJobsResponse{}
 	err := v.PostForAPIWithRequestResponse("DescribeMediaProcessJobs", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) DescribeMediaProcessJob(req DescribeMediaProcessJobRequest) (*DescribeMediaProcessJobResponse, error) {
+	resp := &DescribeMediaProcessJobResponse{}
+	err := v.PostForAPIWithRequestResponse("DescribeMediaProcessJob", req, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VodClient) ListMediaProcessJob(req ListMediaProcessJobRequest) (*ListMediaProcessJobResponse, error) {
+	resp := &ListMediaProcessJobResponse{}
+	err := v.PostForAPIWithRequestResponse("ListMediaProcessJob", req, resp)
 	if err != nil {
 		return nil, err
 	}
