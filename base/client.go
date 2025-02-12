@@ -160,7 +160,7 @@ func (c *OpenAPI) PostForAPIWithRequestResponse(api string, req interface{}, res
 				return fmt.Errorf("api: %s, http: %d, body: %s", api, r.StatusCode, string(body))
 			}
 			if err2 := json.Unmarshal(body, resp); err2 != nil {
-				return fmt.Errorf("api: %s, %e", api, err2)
+				return fmt.Errorf("api: %s, %s", api, err2)
 			} else {
 				return nil
 			}

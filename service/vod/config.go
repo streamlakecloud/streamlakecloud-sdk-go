@@ -88,6 +88,7 @@ var ApiList = map[string]*base.ApiInfo{
 		},
 	},
 
+	// deprecated, do not use
 	"DescribeMediaProcessJobs": {
 		Method: http.MethodPost,
 		Path:   "/",
@@ -95,6 +96,29 @@ var ApiList = map[string]*base.ApiInfo{
 			"Action": []string{"DescribeMediaProcessJobs"},
 		},
 	},
+
+	"DescribeMediaProcessJob": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		Query: url.Values{
+			"Action": []string{"DescribeMediaProcessJob"},
+		},
+	},
+
+	"ListMediaProcessJob": {
+		Method: http.MethodPost,
+		Path:   "/",
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		Query: url.Values{
+			"Action": []string{"ListMediaProcessJob"},
+		},
+	},
+
 	/*************
 	 * 媒资管理
 	 *************/

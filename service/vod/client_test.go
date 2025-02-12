@@ -3,18 +3,19 @@ package vod
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/streamlakecloud/streamlakecloud-sdk-go/base"
-	"github.com/stretchr/testify/assert"
 	"log"
 	"net/http"
 	"os"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/streamlakecloud/streamlakecloud-sdk-go/base"
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -281,6 +282,37 @@ func TestDescribeMediaProcessJobs(t *testing.T) {
 	resp, err := client.DescribeMediaProcessJobs(req)
 	if err != nil {
 		t.Fatalf("%e", err)
+	} else {
+		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+}
+
+func TestDescribeMediaProcessJob(t *testing.T) {
+	client := NewVodClient(nil)
+	client.ServiceInfo.Host = HOST_ENDPOINT
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST}
+	req := DescribeMediaProcessJobRequest{
+		JobId: "09b10a6c-1847-41c9-949c-27a7c2463773-20250211-0-1",
+	}
+	resp, err := client.DescribeMediaProcessJob(req)
+	if err != nil {
+		t.Fatalf("%s", err)
+	} else {
+		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
+	}
+}
+
+func TestListMediaProcessJob(t *testing.T) {
+	client := NewVodClient(nil)
+	client.ServiceInfo.Host = HOST_ENDPOINT
+	client.ServiceInfo.Credentials = base.Credentials{AccessKey: ACCESS_KEY_TEST, SecretAccessKey: SECRET_KEY_TEST}
+	req := ListMediaProcessJobRequest{
+		Offset: 0,
+		Limit:  1,
+	}
+	resp, err := client.ListMediaProcessJob(req)
+	if err != nil {
+		t.Fatalf("%s", err)
 	} else {
 		t.Logf("got response meta: %+v, data: %+v", resp.ResponseMeta, resp.ResponseData)
 	}
