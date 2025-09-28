@@ -490,6 +490,17 @@ type SourceInfo struct {
 	VideoStreams []VideoStream
 	AudioStreams []AudioStream
 	HdrType      string // enum, one of {"SDR", "HDR10", "HDR10+", "Dolby Vision", "HLG", "SDR+"}
+	Aigc         Aigc
+}
+
+type Aigc struct {
+	Label             string `json:"label"`
+	ContentProducer   string `json:"contentProducer"`
+	ProduceId         string `json:"produceId"`
+	ReservedCode1     string `json:"reservedCode1"`
+	ContentPropagator string `json:"contentPropagator"`
+	PropagateId       string `json:"propagateId"`
+	ReservedCode2     string `json:"reservedCode2"`
 }
 
 type TranscodeInfo struct {
