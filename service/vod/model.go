@@ -119,6 +119,7 @@ type WatermarkSet struct {
 	HeightReferEdge     string `json:",omitempty"`
 	MarginXReferEdge    string `json:",omitempty"`
 	MarginYReferEdge    string `json:",omitempty"`
+	TextContent         string `json:",omitempty"`
 }
 type TranscodeSet struct {
 	TranscodeTemplateId string         //"480P_MP4_H265_0"
